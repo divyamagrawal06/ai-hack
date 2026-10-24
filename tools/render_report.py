@@ -9,8 +9,11 @@ import html
 from pathlib import Path
 import re
 import shutil
+import sys
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(ROOT))
+from tools.browser_runtime import browser_launch_options
 
 
 def inline(text):
@@ -64,20 +67,21 @@ def markdown(text):
 def main():
     parser=argparse.ArgumentParser(); parser.add_argument('--html-only',action='store_true'); args=parser.parse_args()
     report=ROOT/'reports/submission-report.md'
-    body=markdown(report.read_text())
+    body=markdown(report.read_text(encoding="utf-8"))
     figures=[]
-    for name,caption in [('intake-desktop','Implemented desktop intake form'),('staff-workspace','Implemented staff review, booking and audit'),('intake-mobile','Implemented mobile intake form')]:
+    for name,caption in [('live-ai-result','Actual local AI result'),('intake-desktop','Desktop intake and model status'),('staff-workspace','Staff review and AI handoff'),('intake-mobile','Mobile intake')]:
         path=ROOT/f'reports/screenshots/{name}.png'
         if path.exists():
             data=base64.b64encode(path.read_bytes()).decode()
             figures.append(f'<section class="figure"><h2>{caption}</h2><p>Actual screenshot of the synthetic prototype; no patient records.</p><img alt="{caption}" src="data:image/png;base64,{data}"></section>')
     document='''<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CareRoute submission report</title><style>
     @page { size:A4; margin:18mm 15mm 19mm; }
-    body{font:10.5pt/1.48 Arial,sans-serif;color:#183438;max-width:1000px;margin:32px auto;padding:0 20px}
-    h1{font-size:27pt;line-height:1.12;color:#126f6b;border-bottom:5px solid #126f6b;padding-bottom:20px}
-    h2{font-size:15pt;margin-top:25px;color:#126f6b;break-after:avoid}h3{break-after:avoid}
-    p,li{orphans:3;widows:3}a{color:#126f6b}table{width:100%;border-collapse:collapse;font-size:9pt;margin:16px 0}
-    th,td{border:1px solid #cbdad8;padding:8px;text-align:left;vertical-align:top}th{background:#e5f0ed}tr{break-inside:avoid}
+    body{font:10pt/1.42 Arial,sans-serif;color:#20314f;max-width:1000px;margin:32px auto;padding:0 20px}
+    h1{font-size:24pt;line-height:1.12;color:#315de0;border-bottom:5px solid #315de0;padding-bottom:14px;margin:0 0 18px}
+    h2{font-size:14pt;margin-top:18px;color:#315de0;break-after:avoid}h3{break-after:avoid}
+    p{margin:9px 0}p,li{orphans:3;widows:3}p,ol,ul,pre{break-inside:avoid}ol,ul{margin:8px 0;padding-left:22px}
+    a{color:#315de0}table{width:100%;border-collapse:collapse;font-size:9pt;margin:12px 0}
+    th,td{border:1px solid #cbdad8;padding:6px;text-align:left;vertical-align:top}th{background:#e8efff}tr{break-inside:avoid}
     code{font:9pt monospace;background:#edf4f2;padding:1px 3px}pre{white-space:pre-wrap}
     .figure{break-before:page}.figure img{display:block;max-width:100%;max-height:230mm;object-fit:contain;margin:12px auto}
     @media print{body{margin:0;padding:0;max-width:none}a{text-decoration:none}}
@@ -86,11 +90,9 @@ def main():
     if not args.html_only:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:
-            launch={'headless':True,'args':['--no-sandbox']}
-            executable=shutil.which('chromium') or shutil.which('chromium-browser')
-            if executable: launch['executable_path']=executable
-            browser=p.chromium.launch(**launch); page=browser.new_page()
-            page.set_content(document, wait_until='load')
+            browser=p.chromium.launch(**browser_launch_options()); page=browser.new_page()
+            pdf_document = document.replace('<head>', '<head><base href="https://github.com/divyamagrawal06/ai-hack/blob/main/reports/">', 1)
+            page.set_content(pdf_document, wait_until='load')
             page.pdf(path=str(ROOT/'reports/submission-report.pdf'),print_background=True,prefer_css_page_size=True,
                      display_header_footer=True,header_template='<span></span>',
                      footer_template='<div style="font-size:8px;width:100%;text-align:center;color:#607370">CareRoute · synthetic demonstration · <span class="pageNumber"></span> / <span class="totalPages"></span></div>')

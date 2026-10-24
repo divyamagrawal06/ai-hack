@@ -32,7 +32,7 @@ def reject_constant(value):
 
 
 manifest = json.loads(
-    (ROOT / "fixtures/synthetic-cases.json").read_text(),
+    (ROOT / "fixtures/synthetic-cases.json").read_text(encoding="utf-8"),
     object_pairs_hook=reject_duplicates,
     parse_constant=reject_constant,
 )
@@ -106,8 +106,8 @@ require(set(timing_gaps) == {"FX-08", "FX-09", "FX-38"}, "Model-dependent timing
 
 docs = sorted((ROOT / "docs").glob("*.md"))
 require(len(docs) == 7, "Expected seven specification documents")
-req_text = (ROOT / "docs/01-requirements.md").read_text()
-plan_text = (ROOT / "docs/06-evaluation-test-plan.md").read_text()
+req_text = (ROOT / "docs/01-requirements.md").read_text(encoding="utf-8")
+plan_text = (ROOT / "docs/06-evaluation-test-plan.md").read_text(encoding="utf-8")
 require(set(re.findall(r"^\| (REQ-\d+) \|", req_text, re.M)) == requirements, "Requirement definitions")
 require(set(re.findall(r"^\| (REQ-\d+) \|", plan_text, re.M)) == requirements, "Requirement traceability")
 test_ids = set(re.findall(r"^\| (T-\d+) \|", plan_text, re.M))
@@ -116,7 +116,7 @@ require(set(re.findall(r"\bT-\d+\b", plan_text)) <= test_ids, "Unknown test refe
 
 local_links = 0
 for path in ROOT.rglob("*.md"):
-    for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", path.read_text()):
+    for target in re.findall(r"\[[^\]]*\]\(([^)]+)\)", path.read_text(encoding="utf-8")):
         if "://" in target or target.startswith("#"):
             continue
         target = target.split("#", 1)[0]

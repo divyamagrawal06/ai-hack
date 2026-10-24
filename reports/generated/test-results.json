@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-24T18:14:01.006059+00:00",
+  "timestamp": "2026-10-24T22:36:30.341005+00:00",
   "policy_version": "demo-policy-0.3",
   "scope": "Local policy, mocked provider contracts, actual HTTP and SQLite integration; no live model calls",
-  "tests_run": 122,
-  "passed": 122,
+  "tests_run": 134,
+  "passed": 134,
   "failures": [],
   "errors": [],
   "skipped": [],
-  "duration_seconds": 14.274,
+  "duration_seconds": 17.632,
   "live_model_calls": 0
 }

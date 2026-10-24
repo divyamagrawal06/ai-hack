@@ -1,36 +1,35 @@
-# Five-minute submission demonstration
+# CareRoute: three-minute demo
 
-Use the local app only with invented information. Start it using the README command; no API keys are needed for this demonstration. The model dropdown and audit distinguish no AI, replay and live inference.
+Start with `python -X utf8 tools/start_demo.py` or double-click **Start CareRoute.cmd**. Open http://127.0.0.1:8080. Keep the laptop plugged in for GPU inference.
 
-1. **Show the boundary.** Point to the synthetic-only banner and permanent emergency instruction. Explain that the software handles appointment requests, makes no diagnosis, and never contacts emergency services.
-2. **Demonstrate immediate guidance.** Choose fixture FX-08, or type the invented text “I cannot breathe right now.” Guidance appears before submission. Disable browser networking and choose Yes/Unsure on an emergency check: guidance still appears. No receipt or staff-notified claim is created. Choose **New request** to start a separate scenario.
-3. **Show the conservative default.** Load FX-01, choose **Structured intake · no AI**, confirm the invented-data checkbox and submit. Receipt means durable local storage. H05 asks a human to interpret the narrative; information sufficiency is unclear. No appointment is booked and no message is sent.
-4. **Show transparent replay.** Start a new request, load FX-01 and select Replay. Submit. The recorded authored assessment produces the routine suggestion with R01; the UI says this is not live AI. Expand the reasons. Editing the text prevents reuse of the old replay result.
-5. **Review and book.** Sign into Staff workspace as `reviewer` / `demo-reviewer`. Select a request, claim it, choose an administrative action and enter the actual review reason. Save the review. Choose a future synthetic appointment time and confirm. The audit preserves receipt, input, assessment, rules, staff action and booking separately.
-6. **Show an override safeguard.** For an emergency request, propose a lower action with a reason. It remains pending until a different `supervisor` / `demo-supervisor` signs in and approves. Previous emergency guidance remains in the history.
-7. **Present the results honestly.** Open the submission report and generated evaluation. Explain why the initial structured baseline made five incorrect routine suggestions and why policy 0.3 trades those for more review. State that replay checks verify wiring, not Jev accuracy; live-model comparisons and human participant testing were not performed.
+## 1. Show a real local model
 
-## Optional failure demonstrations
+Point to the model panel: it reports the installed model and connection to Ollama. Explain: "The request is read on this laptop. There is no cloud model or API key in this flow."
 
-Use a separate database and port so the ordinary demonstration remains intact:
+Click **Routine visit**, then edit a few words if desired. The scenario button fills invented inputs; it does not load a saved AI answer. Submit the request. The receipt appears first, then the fresh model result. Show the exact excerpts, model name, token count and measured inference duration.
 
-```sh
-CLINIC_TEST_FAIL_SAVES=1 python3 -m clinic.server --test-mode --port 8081 --db var/failure-demo.sqlite3
-```
+## 2. Complete the staff workflow
 
-Submit an invented emergency request there. The page reports that the request was not received and retains emergency guidance. No false notification or booking is shown. This flag is honored only with explicit `--test-mode`.
+Open **Staff workspace**. Sign in with `reviewer` / `demo-reviewer`. Select the request. Compare the original description, AI-selected excerpts and six structured assessments.
 
-For simulated closed-hours coverage:
+Save a human review with a short reason. Choose a future appointment time and confirm the synthetic booking. Open the audit history to show the actual request, raw model output, policy decision, review and booking events.
 
-```sh
-CLINIC_DEMO_OPEN=0 python3 -m clinic.server --port 8082 --db var/closed-demo.sqlite3
-```
+The model proposes a handoff; a human completes the booking. No external appointment or notification is created.
 
-Requests retain their urgency, but the UI says review is unavailable and no alternate contact is configured. The demonstration provides no actual after-hours care service.
+## 3. Show a different outcome
 
-## Submission checklist
+Return to intake. Choose **Needs attention** and submit: the request should call for human review under the demo policy. Choose **Immediate concern** to show that the emergency notice appears immediately, before submission or AI inference.
 
-- Include the ZIP archive, printable report and source, plus generated JSON/logs and screenshots already included in the archive.
-- Do not include `var/`, environment secrets or any real records.
-- Present the seven-paper review as literature research; do not present published performance as our measured result.
-- Describe this as a tested synthetic prototype. No policy approval, clinical pilot, human usability study or deployment claim is made.
+For a model-understanding example, edit an invented description while leaving the selected form answers consistent. The model should assess the new wording afresh. Its output is a prototype suggestion, so show the original text and staff review alongside it.
+
+## 4. Explain failure honestly
+
+The test suite also exercises a disconnected model. CareRoute retains the saved request, labels the AI as unavailable and sends it for staff review. It never substitutes a canned success. The default no-AI baseline, available in advanced controls, demonstrates the difference: ordinary narratives remain unassessed and go to human review.
+
+## Useful answers for judges
+
+- **What is AI here?** A local Qwen3 4B Instruct model performs six structured semantic assessments and selects exact evidence excerpts.
+- **What is deterministic?** Input validation, immediate warning checks, routing precedence, excerpt validation, persistence, permissions and booking transitions.
+- **Why local?** No hosted inference cost or key is needed for the demo; inputs stay on the laptop in local mode.
+- **Can it handle real patients?** This demonstration uses invented records and an illustrative policy. Clinical validation, approved scope, real authentication and operational integration are outside this submission.
+- **How is it tested?** Automated API/policy contracts, real Chrome workflows, actual local-model runs and saved failure-inclusive results. See the current submission report for measured outcomes.

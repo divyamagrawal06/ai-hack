@@ -2,6 +2,13 @@
 import os
 
 POLICY_VERSION = "demo-policy-0.3"
+DEFAULT_LOCAL_MODEL = "qwen3:4b-instruct"
+
+
+def local_model():
+    return os.environ.get("CLINIC_LOCAL_MODEL", DEFAULT_LOCAL_MODEL)
+
+
 QUESTIONS = [
     {"id": "CHECK-01", "text": "Severe trouble breathing now"},
     {"id": "CHECK-02", "text": "Severe chest discomfort now"},
@@ -18,8 +25,10 @@ def public_config():
     return {
         "policy_version": POLICY_VERSION,
         "synthetic_only": True,
+        "default_variant": "local_ai",
         "emergency_questions": QUESTIONS,
         "variants": [
+            {"id": "local_ai", "label": "Local AI · " + local_model(), "available": True, "reason": "Reads your invented request using a model on this computer. No API key needed."},
             {"id": "no_ai", "label": "Structured intake • no AI", "available": True, "reason": "Staff interpret the narrative."},
             {"id": "replay", "label": "Replay • authored synthetic assessment", "available": True, "reason": "Exact saved fixture, never a live inference."},
             {"id": "jev_direct", "label": "Jev • direct decision with defer", "available": jev, "reason": "Requires a TypeSafe API key in environment settings."},

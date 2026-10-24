@@ -47,6 +47,15 @@ class StoreError(Exception):
         self.message = message
 
 
+class ClosingConnection(sqlite3.Connection):
+    """SQLite's normal context manager commits but leaves the handle open."""
+    def __exit__(self, exc_type, exc_value, traceback):
+        try:
+            return super().__exit__(exc_type, exc_value, traceback)
+        finally:
+            self.close()
+
+
 class Store:
     def __init__(self, path, fail_saves=False, coverage=None):
         self.path = str(path)
@@ -80,7 +89,7 @@ class Store:
             """)
 
     def connect(self):
-        db = sqlite3.connect(self.path, timeout=15)
+        db = sqlite3.connect(self.path, timeout=15, factory=ClosingConnection)
         db.row_factory = sqlite3.Row
         db.execute("PRAGMA foreign_keys=ON")
         return db
@@ -179,6 +188,17 @@ class Store:
         result["overdue"] = item["review_state"] != "reviewed" and datetime.fromisoformat(item["due_at"]) < now()
         result["staff_notified"] = False
         result["appointment_booked"] = item["booking"]["state"] == "booked"
+        assessment = item.get("assessment") or {}
+        result["ai"] = {
+            "provider": assessment.get("provider"),
+            "model": assessment.get("model_version") or assessment.get("requested_model"),
+            "status": assessment.get("model_status", "pending" if item["assessment_state"] == "pending" else item["assessment_state"]),
+            "local": assessment.get("local", item["variant"] == "local_ai"),
+            "latency_ms": assessment.get("latency_ms"),
+            "prompt_tokens": assessment.get("prompt_tokens"), "completion_tokens": assessment.get("completion_tokens"),
+            "summary": assessment.get("summary", ""), "summary_kind": assessment.get("summary_kind"),
+            "evidence": assessment.get("evidence", []), "error": assessment.get("error"),
+        }
         if not staff:
             for field in ("input_revisions", "assessment", "assessment_attempts", "client_events", "staff_reviews", "input_hash"):
                 result.pop(field, None)

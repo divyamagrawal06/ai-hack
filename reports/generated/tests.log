@@ -45,6 +45,18 @@ test_unknown_variant_degrades (test_assessors.AssessorContracts.test_unknown_var
 test_wall_deadline_discards_late_result (test_assessors.AssessorContracts.test_wall_deadline_discards_late_result) ... ok
 test_local_warning_preserves_original_text_without_fabricated_model_spans (test_evidence.EvidenceTests.test_local_warning_preserves_original_text_without_fabricated_model_spans) ... ok
 test_unicode_offsets_round_trip_original_text (test_evidence.EvidenceTests.test_unicode_offsets_round_trip_original_text) ... ok
+test_busy_gpu_uses_human_fallback_without_second_transport (test_local_ai.LocalAdapterTests.test_busy_gpu_uses_human_fallback_without_second_transport) ... ok
+test_endpoint_rejects_remote_urls_and_ambiguous_addresses (test_local_ai.LocalAdapterTests.test_endpoint_rejects_remote_urls_and_ambiguous_addresses) ... ok
+test_fabricated_quotes_extra_fields_and_truncation_are_rejected (test_local_ai.LocalAdapterTests.test_fabricated_quotes_extra_fields_and_truncation_are_rejected) ... ok
+test_local_is_selectable_default_without_keys (test_local_ai.LocalAdapterTests.test_local_is_selectable_default_without_keys) ... ok
+test_local_wall_deadline_retains_provenance (test_local_ai.LocalAdapterTests.test_local_wall_deadline_retains_provenance) ... ok
+test_offline_falls_back_without_claiming_inference (test_local_ai.LocalAdapterTests.test_offline_falls_back_without_claiming_inference) ... ok
+test_receipt_has_compact_ai_result_without_transport_payload (test_local_ai.LocalAdapterTests.test_receipt_has_compact_ai_result_without_transport_payload) ... ok
+test_second_server_cannot_hijack_running_listener (test_local_ai.LocalAdapterTests.test_second_server_cannot_hijack_running_listener) ... ok
+test_status_http_endpoint_and_pending_receipt (test_local_ai.LocalAdapterTests.test_status_http_endpoint_and_pending_receipt) ... ok
+test_status_requires_actual_installed_local_model (test_local_ai.LocalAdapterTests.test_status_requires_actual_installed_local_model) ... ok
+test_structured_emergency_guard_overrules_model_routine (test_local_ai.LocalAdapterTests.test_structured_emergency_guard_overrules_model_routine) ... ok
+test_structured_response_retains_prompt_model_usage_and_grounded_evidence (test_local_ai.LocalAdapterTests.test_structured_response_retains_prompt_model_usage_and_grounded_evidence) ... ok
 test_current_explicit_breathing_warning (test_policy.LocalEmergencyDetectorTests.test_current_explicit_breathing_warning) ... ok
 test_explicit_negation_does_not_trigger (test_policy.LocalEmergencyDetectorTests.test_explicit_negation_does_not_trigger) ... ok
 test_fictional_quote_does_not_suppress_separate_current_warning (test_policy.LocalEmergencyDetectorTests.test_fictional_quote_does_not_suppress_separate_current_warning) ... ok
@@ -165,6 +177,6 @@ test_FX_44 (test_policy.ReplayPolicyConformanceTests.test_FX_44)
 FX-44: Missing onset and currentness information (authored replay, not model evaluation). ... ok
 
 ----------------------------------------------------------------------
-Ran 122 tests in 14.274s
+Ran 134 tests in 17.631s
 
 OK

@@ -6,7 +6,7 @@ import zipfile
 
 ROOT=Path(__file__).resolve().parents[1]
 ALLOWED_DIRS={'clinic','static','tests','tools','docs','fixtures','research','reports'}
-ALLOWED_FILES={'README.md','DEMO.md','Makefile','requirements.txt','requirements-dev.txt','.gitignore'}
+ALLOWED_FILES={'README.md','DEMO.md','Makefile','requirements.txt','requirements-dev.txt','.gitignore','.gitattributes','Start CareRoute.cmd'}
 
 
 def main():

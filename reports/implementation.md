@@ -1,3 +1,18 @@
+> **Local-AI update, 25 October 2026.** The sections below preserve the earlier implementation notes. The current default is `local_ai`, implemented in `clinic/assessors.py`, and the current report/evidence are in [the submission report](submission-report.md).
+
+## Current local AI integration
+
+- `GET /api/ai/status` probes the actual local Ollama model without generating text. It reports ready, offline, model missing or invalid configuration.
+- `POST /api/requests` defaults to `local_ai`; the request is saved before inference. The six enum assessments and exact source excerpts are validated before routing.
+- Public request receipts include a compact `ai` object: provider, local flag, model, status, inference duration, token counts, exact excerpts and any failure. The authenticated staff view retains the full raw prompt/response, model digest and prompt hash.
+- `CLINIC_LOCAL_MODEL` defaults to `qwen3:4b-instruct`; `CLINIC_OLLAMA_URL` accepts literal loopback HTTP addresses only. Cloud Ollama models are refused in local mode. The transport bypasses system proxies and refuses redirects.
+- Local inference has a 90-second wall deadline, a single-inference semaphore and a 512-token output budget. Busy, offline, malformed or timed-out requests visibly defer to staff. There is no authored-response substitution.
+- Staff detail automatically refreshes after pending AI completes; review and booking drafts survive refreshes. Original text, model findings and human decisions remain distinct.
+- The launcher discovers the portable runtime or an existing Ollama installation. The Windows setup verifies pinned runtime files and the executable signature, enables Vulkan and downloads the model. Runtime/model files and SQLite are excluded from the submission ZIP.
+- SQLite connections now close reliably on Windows; browser tooling discovers installed Chrome or Edge.
+
+## Earlier implementation notes
+
 # Implementation and reproducibility notes
 
 Current runnable policy: **demo-policy-0.3**. Runtime: Python 3.11+ standard library, SQLite, static HTML/CSS/JavaScript. Tests ran on Python 3.12 with Chromium through Playwright. No build pipeline or third-party runtime install is required.

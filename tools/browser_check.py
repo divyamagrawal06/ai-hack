@@ -14,6 +14,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 from clinic.server import make_server
 from clinic.policy import detect_local_warning
+from tools.browser_runtime import browser_launch_options
 
 
 def main():
@@ -24,7 +25,7 @@ def main():
     output.mkdir(parents=True, exist_ok=True)
     from playwright.sync_api import sync_playwright, expect
     results, timings, errors = [], [], []
-    cases = json.loads((ROOT / 'fixtures/synthetic-cases.json').read_text())['cases']
+    cases = json.loads((ROOT / 'fixtures/synthetic-cases.json').read_text(encoding="utf-8"))['cases']
 
     def check(name, fn):
         started = time.monotonic()
@@ -40,11 +41,7 @@ def main():
         worker = threading.Thread(target=server.serve_forever, daemon=True)
         worker.start()
         base = 'http://127.0.0.1:' + str(server.server_port)
-        launch = {'headless': True, 'args': ['--no-sandbox']}
-        chromium = shutil.which('chromium') or shutil.which('chromium-browser')
-        if chromium:
-            launch['executable_path'] = chromium
-        browser = p.chromium.launch(**launch)
+        browser = p.chromium.launch(**browser_launch_options())
         context = browser.new_context(viewport={'width': 1440, 'height': 1000})
         page = context.new_page()
         page.on('pageerror', lambda error: errors.append(str(error)))

@@ -1,4 +1,4 @@
-/* CareRoute synthetic demonstration. No model runs in this client. */
+/* CareRoute: real local inference via the server, independent immediate client guards. */
 "use strict";
 const $ = (id) => document.getElementById(id);
 const escapeHTML = (value) => String(value ?? "").replace(/[&<>"']/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
@@ -6,7 +6,7 @@ const routeLabel = (route) => ({routine_appointment:"Routine appointment",same_d
 const routeClass = (route) => route === "emergency_guidance" ? "emergency" : route === "same_day_human_review" ? "same-day" : "routine";
 const readable = (value) => String(value ?? "Not recorded").replace(/_/g, " ");
 const formatTime = (value) => value ? new Date(value).toLocaleString(undefined,{dateStyle:"medium",timeStyle:"short"}) : "Not recorded";
-const state = {fixtures:[], config:null, fixture:null, fixtureDirty:false, loadingFixture:false, clientEvents:[], alertKeys:new Set(), submission:null, submitting:false, generation:0, receipt:null, pollTimer:null, user:null, requests:[], selected:null, reviewDrafts:{}};
+const state = {fixtures:[], config:null, fixture:null, fixtureDirty:false, loadingFixture:false, clientEvents:[], alertKeys:new Set(), submission:null, submitting:false, generation:0, receipt:null, pollTimer:null, user:null, requests:[], selected:null, reviewDrafts:{}, bookingDrafts:{}, staffPollTimer:null, detailLoad:0, aiStatus:null, aiStatusTimer:null, aiStartedAt:null};
 const warningText = {"CHECK-01":"Severe trouble breathing now","CHECK-02":"Severe chest discomfort now","CHECK-03":"Sudden trouble speaking or new one-sided weakness","CHECK-04":"Uncontrolled heavy bleeding now","CHECK-05":"Possible overdose or poisoning now","CHECK-06":"Immediate danger of self-harm"};
 
 // Mirror clinic.policy.PATTERNS and its bounded context filter. This is not a
@@ -112,13 +112,14 @@ function collectInputs() {
 function updateModeNote() {
   const mode = $("assessment-mode").value;
   const notes = {
+    local_ai:["Live local AI","Reads your description on this computer, checks six routing criteria and selects source excerpts for staff. Every suggestion still needs human review."],
     no_ai:["No AI","Immediate checks can show emergency guidance. Every other request goes to human review because no semantic AI has assessed the description."],
     replay:["Replay — not live AI",state.fixtureDirty ? "This scenario has changed. Reload it for an exact saved replay, or choose structured rules." : "Uses the selected scenario’s authored assessment. It is not a fresh Jev or LLM prediction. Infrastructure failures in the fixture are tested separately, not automatically simulated here."],
     jev_direct:["Live Jev · direct decision","Requests a bounded route or explicit defer. Hard guards and staff review still apply."],
     jev_decomposed:["Live Jev · focused assessments","Requests separate warning, sufficiency, scope and contradiction judgments, then applies policy rules."],
     llm:["Live structured LLM","Requests bounded assessments using the same policy contract. It does not generate medical advice."],
   };
-  const [title,body] = notes[mode];
+  const [title,body] = notes[mode] || notes.local_ai;
   $("mode-note").innerHTML = `<strong>${escapeHTML(title)}</strong><p>${escapeHTML(body)}</p>`;
 }
 function setSelect(id, value) {
@@ -132,6 +133,7 @@ function resetRequest(clearFixture=true) {
   state.submitting = false;
   clearTimeout(state.pollTimer);
   $("intake-form").reset();
+  for (const button of document.querySelectorAll("[data-scenario]")) button.classList.remove("selected");
   $("preferred-times").disabled = false;
   $("receipt-panel").hidden = true;
   $("form-error").hidden = true;
@@ -141,10 +143,11 @@ function resetRequest(clearFixture=true) {
   state.submission = null;
   state.receipt = null;
   state.fixtureDirty = false;
-  if (clearFixture) { state.fixture = null; $("fixture-select").value = ""; $("fixture-note").textContent = "44 authored cases cover routine requests, uncertainty, emergencies and failures."; }
+  if (clearFixture) { state.fixture = null; $("fixture-select").value = ""; $("fixture-note").textContent = "44 invented cases to explore."; }
   $("character-count").textContent = "0 / 4,000";
   $("submit-request").disabled = false;
-  $("submit-request").textContent = "Submit synthetic request →";
+  $("submit-request").textContent = "Analyze request";
+  state.aiStartedAt = null;
   updateModeNote();
 }
 function loadFixture() {
@@ -178,6 +181,14 @@ function loadFixture() {
   updateModeNote();
 }
 $("fixture-select").addEventListener("change",loadFixture);
+for (const button of document.querySelectorAll("[data-scenario]")) button.addEventListener("click",()=> {
+  if (!state.fixtures.length) return;
+  $("fixture-select").value = button.dataset.scenario;
+  $("assessment-mode").value = "local_ai";
+  loadFixture();
+  for (const scenario of document.querySelectorAll("[data-scenario]")) scenario.classList.toggle("selected", scenario === button);
+  $("symptom-text").focus({preventScroll:true});
+});
 $("assessment-mode").addEventListener("change",() => { if (!state.submitting && !state.submission?.unknown) state.submission = null; updateModeNote(); });
 $("new-request").addEventListener("click",()=> { resetRequest(); $("symptom-text").focus(); });
 $("no-preference").addEventListener("change",()=> { $("preferred-times").disabled = $("no-preference").checked; });
@@ -214,6 +225,7 @@ $("intake-form").addEventListener("submit",async (event)=> {
   const submission = state.submission;
   const generation = state.generation;
   state.submitting = true;
+  state.aiStartedAt = Date.now();
   const button = $("submit-request");
   button.disabled = true;
   button.textContent = "Sending request…";
@@ -241,6 +253,7 @@ $("intake-form").addEventListener("submit",async (event)=> {
 function modeDescription(request) {
   if (request.mode === "replay") return "Replay — authored synthetic assessment, not a live inference";
   if (request.mode === "degraded") return "Degraded — automated assessment unavailable or unusable";
+  if (request.mode === "live_model" && request.variant === "local_ai") return `Live local AI — ${request.ai?.model || "Ollama"}`;
   if (request.mode === "live_model") return `Live model — ${readable(request.variant)}`;
   if (request.mode === "no_ai") return "No AI — conservative human review; description not semantically assessed";
   return "Assessment pending — no completed model result";
@@ -257,8 +270,9 @@ function renderReceipt(request) {
   else if (request.emergency_guidance_ever) showEmergency("Emergency guidance was shown earlier for this request. Its history is preserved; a later staff decision does not retract the immediate guidance already given.","recorded_history",{request_id:request.id});
   const panel = $("receipt-panel");
   panel.hidden = false;
-  panel.innerHTML = `<p class="eyebrow">Saved in the local demonstration</p><h2>${booked ? "Synthetic appointment booked" : "Your request was received"}</h2><p class="receipt-id">Request ${escapeHTML(request.id)}</p><div class="status-grid"><div class="status-item"><small>Request</small><strong>Received</strong></div><div class="status-item"><small>Assessment</small><strong>${escapeHTML(readable(request.assessment_state || request.assessment_status))}</strong></div><div class="status-item"><small>Human review</small><strong>${escapeHTML(readable(review))}</strong></div><div class="status-item"><small>Appointment</small><strong>${booked ? escapeHTML(formatTime(request.booking.slot)) : "Not booked"}</strong></div></div><div class="suggestion ${routeClass(route)}"><h3>${escapeHTML(routeLabel(route))}</h3>${explanationHTML(request.decision)}</div><p class="small-note"><strong>Information sufficiency:</strong> ${escapeHTML(readable(request.decision?.information_sufficiency || "pending"))}. This is separate from urgency.</p><p class="small-note"><strong>Mode:</strong> ${escapeHTML(modeDescription(request))}</p>${request.coverage?.available === false ? '<div class="message error-message"><strong>Clinic review is unavailable now.</strong> No alternate care contact is configured in this synthetic demo. Do not wait for this form if this may be an emergency.</div>' : '<p class="small-note">Queue coverage is simulated. This demonstration does not provide a real review service.</p>'}<p class="small-note"><strong>No messages were sent.</strong> Notifications are simulated; no clinic or emergency service was contacted.</p><p class="small-note">An administrative suggestion is not a diagnosis or an assurance of safety. ${booked ? "This booking is synthetic only." : "Staff review and a separate booking are still required."}</p><button id="refresh-receipt" type="button" class="button secondary">Refresh request status</button>`;
+  panel.innerHTML = `<p class="eyebrow">Saved in the local demonstration</p><h2>${booked ? "Synthetic appointment booked" : "Your request was received"}</h2><p class="receipt-id">Request ${escapeHTML(request.id)}</p><div class="status-grid"><div class="status-item"><small>Request</small><strong>Received</strong></div><div class="status-item"><small>Assessment</small><strong>${escapeHTML(readable(request.assessment_state || request.assessment_status))}</strong></div><div class="status-item"><small>Human review</small><strong>${escapeHTML(readable(review))}</strong></div><div class="status-item"><small>Appointment</small><strong>${booked ? escapeHTML(formatTime(request.booking.slot)) : "Not booked"}</strong></div></div>${aiResultHTML(request)}<div class="suggestion ${routeClass(route)}"><h3>${escapeHTML(routeLabel(route))}</h3>${explanationHTML(request.decision)}</div><p class="small-note"><strong>Information sufficiency:</strong> ${escapeHTML(readable(request.decision?.information_sufficiency || "pending"))}. This is separate from urgency.</p><p class="small-note"><strong>Mode:</strong> ${escapeHTML(modeDescription(request))}</p>${request.coverage?.available === false ? '<div class="message error-message"><strong>Clinic review is unavailable now.</strong> No alternate care contact is configured in this synthetic demo. Do not wait for this form if this may be an emergency.</div>' : '<p class="small-note">Queue coverage is simulated. This demonstration does not provide a real review service.</p>'}<p class="small-note"><strong>No messages were sent.</strong> Notifications are simulated; no clinic or emergency service was contacted.</p><p class="small-note">An administrative suggestion is not a diagnosis or an assurance of safety. ${booked ? "This booking is synthetic only." : "Staff review and a separate booking are still required."}</p><div class="receipt-actions"><button id="review-receipt" type="button" class="button primary">Continue to staff review</button><button id="refresh-receipt" type="button" class="button secondary">Refresh request status</button></div>`;
   $("refresh-receipt").addEventListener("click",pollReceipt);
+  $("review-receipt").addEventListener("click",()=>showView("staff"));
 }
 async function pollReceipt() {
   clearTimeout(state.pollTimer);
@@ -314,7 +328,7 @@ function staffMessage(message,isError=false) {
   element.hidden = false;
   element.classList.toggle("error-message",isError);
 }
-async function loadQueue() {
+async function loadQueue({refreshSelected=true}={}) {
   try {
     const data = await api("/api/queue");
     state.requests = data.requests || [];
@@ -331,12 +345,15 @@ async function loadQueue() {
       card.addEventListener("click",()=>loadStaffRequest(request.id));
       list.append(card);
     }
-    if (state.selected) loadStaffRequest(state.selected.id);
+    if (state.selected && refreshSelected) loadStaffRequest(state.selected.id);
   } catch(error) { staffMessage(error.message,true); if (error.status === 401) { state.user=null;renderSession(); } }
 }
 async function loadStaffRequest(id) {
+  const load = ++state.detailLoad;
+  clearTimeout(state.staffPollTimer);
   try {
     const data = await api(`/api/requests/${encodeURIComponent(id)}`);
+    if (load !== state.detailLoad || !state.user) return;
     state.selected = data.request;
     renderStaffDetail();
     for (const card of document.querySelectorAll(".queue-card")) card.classList.toggle("active",card.dataset.requestId === id);
@@ -350,7 +367,7 @@ function renderStaffDetail() {
   const inputs = r.inputs || {};
   const selectedOption = (value) => route === value ? " selected" : "";
   const warnHistory = r.emergency_guidance_ever || (r.client_events || []).length;
-  $("staff-detail").innerHTML = `<p class="eyebrow">Request ${escapeHTML(r.id.slice(0,8))} · revision ${escapeHTML(r.input_revision)} · version ${escapeHTML(r.version)}</p><h2>${escapeHTML(routeLabel(route))}</h2><p class="small-note">Received ${escapeHTML(formatTime(r.created_at))} · ${escapeHTML(modeDescription(r))}</p>${warnHistory ? '<div class="message error-message"><strong>Emergency guidance history is preserved.</strong> A later override does not retract advice already shown. Emergency downgrades require a different supervisor’s approval.</div>' : ''}<h3>Original description</h3><div class="original-text">${escapeHTML(inputs.symptom_text || "No description provided")}</div><dl class="detail-fields"><div><dt>Self-reported urgency</dt><dd>${escapeHTML(readable(inputs.self_reported_urgency))}</dd></div><div><dt>Information sufficiency</dt><dd>${escapeHTML(readable(r.decision?.information_sufficiency || "pending"))}</dd></div><div><dt>Preferred times</dt><dd>${escapeHTML(inputs.no_time_preference ? "No preference" : (inputs.preferred_times || []).join("; ") || "Not provided")}</dd></div><div><dt>Owner / coverage</dt><dd>${escapeHTML(r.owner || "Unassigned")} · ${r.coverage?.available ? "simulated available" : "unavailable"}</dd></div><div><dt>Review target</dt><dd>${escapeHTML(formatTime(r.due_at))}${r.overdue ? " — overdue" : ""}</dd></div><div><dt>Review / booking</dt><dd>${escapeHTML(readable(r.review_state))} · ${escapeHTML(readable(r.booking?.state))}</dd></div></dl><details><summary>All original structured answers</summary><pre class="json-block">${escapeHTML(JSON.stringify(inputs,null,2))}</pre></details><div class="suggestion ${routeClass(r.decision?.route)}"><h3>Recorded automated / rule suggestion</h3>${explanationHTML(r.decision)}<p class="small-note">Policy ${escapeHTML(r.decision?.policy_version || "pending")} · Actual matches: ${escapeHTML((r.decision?.matched_rules || []).join(", ") || "pending")}</p></div>${r.staff_reviews?.length ? `<details><summary>Human reviews and prior actions (${r.staff_reviews.length})</summary><pre class="json-block">${escapeHTML(JSON.stringify(r.staff_reviews,null,2))}</pre></details>` : ''}<div class="staff-actions"><button id="claim-request" class="button secondary" type="button">Claim request</button><button id="refresh-detail" class="button text-button" type="button">Refresh current version</button></div>${pending ? '<div class="message">Assessment is pending. An authorized human review may take over now; a later model response cannot overwrite it. Emergency guidance does not wait.</div>' : ''}${r.pending_override ? `<div class="message"><strong>Emergency downgrade awaiting a second reviewer.</strong><p>Requested action: ${escapeHTML(routeLabel(r.pending_override.route))}. A different authorized supervisor must approve.</p>${state.user?.role === "supervisor" ? '<button id="approve-override" class="button secondary" type="button">Approve pending override</button>' : ''}</div>` : ''}<form id="review-form" class="detail-section"><h3>Record human review</h3><p>The original suggestion remains in the audit history. A change requires a reason.</p><div class="field-grid"><div><label for="review-route">Administrative action</label><select id="review-route"><option value="routine_appointment"${selectedOption("routine_appointment")}>Routine appointment</option><option value="same_day_human_review"${selectedOption("same_day_human_review")}>Same-day human review</option><option value="emergency_guidance"${selectedOption("emergency_guidance")}>Emergency guidance</option></select></div><div><label for="review-reason">Reason</label><select id="review-reason"><option value="incorrect_input_interpretation">Input interpretation</option><option value="new_information">New information</option><option value="policy_exception">Policy exception</option><option value="coverage_issue">Coverage issue</option><option value="other">Other / confirm suggestion</option></select></div></div><label for="review-comment">Review note</label><textarea id="review-comment" rows="3" maxlength="2000" placeholder="Record the actual reason for your decision." required></textarea><button class="button primary" type="submit">Save review</button></form><form id="booking-form" class="detail-section"><h3>Confirm a synthetic appointment</h3><p>A booking requires completed human review. A suggested route alone does not book a slot.</p><label for="booking-slot">Future appointment time (your displayed timezone)</label><input id="booking-slot" type="datetime-local" required><p class="field-help">Converted to an explicit UTC timestamp for storage. This is a synthetic slot, not a real reservation.</p><button class="button secondary" type="submit" ${r.review_state !== "reviewed" || r.pending_override || r.route === "emergency_guidance" ? "disabled" : ""}>Confirm synthetic booking</button>${r.booking?.state === "booked" ? `<p>Booked: ${escapeHTML(formatTime(r.booking.slot))}</p>` : ''}</form><details id="audit-details" class="detail-section"><summary>Complete immutable audit history</summary><div id="audit-content"><p class="small-note">Open to load the recorded events.</p></div></details>`;
+  $("staff-detail").innerHTML = `<p class="eyebrow">Request ${escapeHTML(r.id.slice(0,8))} · revision ${escapeHTML(r.input_revision)} · version ${escapeHTML(r.version)}</p><h2>${escapeHTML(routeLabel(route))}</h2><p class="small-note">Received ${escapeHTML(formatTime(r.created_at))} · ${escapeHTML(modeDescription(r))}</p>${warnHistory ? '<div class="message error-message"><strong>Emergency guidance history is preserved.</strong> A later override does not retract advice already shown. Emergency downgrades require a different supervisor’s approval.</div>' : ''}${aiResultHTML(r, true)}<h3>Original description</h3><div class="original-text">${escapeHTML(inputs.symptom_text || "No description provided")}</div><dl class="detail-fields"><div><dt>Self-reported urgency</dt><dd>${escapeHTML(readable(inputs.self_reported_urgency))}</dd></div><div><dt>Information sufficiency</dt><dd>${escapeHTML(readable(r.decision?.information_sufficiency || "pending"))}</dd></div><div><dt>Preferred times</dt><dd>${escapeHTML(inputs.no_time_preference ? "No preference" : (inputs.preferred_times || []).join("; ") || "Not provided")}</dd></div><div><dt>Owner / coverage</dt><dd>${escapeHTML(r.owner || "Unassigned")} · ${r.coverage?.available ? "simulated available" : "unavailable"}</dd></div><div><dt>Review target</dt><dd>${escapeHTML(formatTime(r.due_at))}${r.overdue ? " — overdue" : ""}</dd></div><div><dt>Review / booking</dt><dd>${escapeHTML(readable(r.review_state))} · ${escapeHTML(readable(r.booking?.state))}</dd></div></dl><details><summary>All original structured answers</summary><pre class="json-block">${escapeHTML(JSON.stringify(inputs,null,2))}</pre></details><div class="suggestion ${routeClass(r.decision?.route)}"><h3>Recorded automated / rule suggestion</h3>${explanationHTML(r.decision)}<p class="small-note">Policy ${escapeHTML(r.decision?.policy_version || "pending")} · Actual matches: ${escapeHTML((r.decision?.matched_rules || []).join(", ") || "pending")}</p></div>${r.staff_reviews?.length ? `<details><summary>Human reviews and prior actions (${r.staff_reviews.length})</summary><pre class="json-block">${escapeHTML(JSON.stringify(r.staff_reviews,null,2))}</pre></details>` : ''}<div class="staff-actions"><button id="claim-request" class="button secondary" type="button">Claim request</button><button id="refresh-detail" class="button text-button" type="button">Refresh current version</button></div>${pending ? '<div class="message">Assessment is pending. An authorized human review may take over now; a later model response cannot overwrite it. Emergency guidance does not wait.</div>' : ''}${r.pending_override ? `<div class="message"><strong>Emergency downgrade awaiting a second reviewer.</strong><p>Requested action: ${escapeHTML(routeLabel(r.pending_override.route))}. A different authorized supervisor must approve.</p>${state.user?.role === "supervisor" ? '<button id="approve-override" class="button secondary" type="button">Approve pending override</button>' : ''}</div>` : ''}<form id="review-form" class="detail-section"><h3>Record human review</h3><p>The original suggestion remains in the audit history. A change requires a reason.</p><div class="field-grid"><div><label for="review-route">Administrative action</label><select id="review-route"><option value="routine_appointment"${selectedOption("routine_appointment")}>Routine appointment</option><option value="same_day_human_review"${selectedOption("same_day_human_review")}>Same-day human review</option><option value="emergency_guidance"${selectedOption("emergency_guidance")}>Emergency guidance</option></select></div><div><label for="review-reason">Reason</label><select id="review-reason"><option value="incorrect_input_interpretation">Input interpretation</option><option value="new_information">New information</option><option value="policy_exception">Policy exception</option><option value="coverage_issue">Coverage issue</option><option value="other">Other / confirm suggestion</option></select></div></div><label for="review-comment">Review note</label><textarea id="review-comment" rows="3" maxlength="2000" placeholder="Record the actual reason for your decision." required></textarea><button class="button primary" type="submit">Save review</button></form><form id="booking-form" class="detail-section"><h3>Confirm a synthetic appointment</h3><p>A booking requires completed human review. A suggested route alone does not book a slot.</p><label for="booking-slot">Future appointment time (your displayed timezone)</label><input id="booking-slot" type="datetime-local" required><p class="field-help">Converted to an explicit UTC timestamp for storage. This is a synthetic slot, not a real reservation.</p><button class="button secondary" type="submit" ${r.review_state !== "reviewed" || r.pending_override || r.route === "emergency_guidance" ? "disabled" : ""}>Confirm synthetic booking</button>${r.booking?.state === "booked" ? `<p>Booked: ${escapeHTML(formatTime(r.booking.slot))}</p>` : ''}</form><details id="audit-details" class="detail-section"><summary>Complete immutable audit history</summary><div id="audit-content"><p class="small-note">Open to load the recorded events.</p></div></details>`;
   const draft = state.reviewDrafts[r.id];
   if (draft) {
     $("review-route").value = draft.route;
@@ -366,6 +383,8 @@ function renderStaffDetail() {
     event.preventDefault();
     staffAction("review",{route:$("review-route").value,reason:$("review-reason").value,comment:$("review-comment").value});
   });
+  if (state.bookingDrafts[r.id]) $("booking-slot").value = state.bookingDrafts[r.id];
+  $("booking-slot").addEventListener("input",()=> { state.bookingDrafts[r.id] = $("booking-slot").value; });
   $("booking-form").addEventListener("submit",event=> {
     event.preventDefault();
     const date = new Date($("booking-slot").value);
@@ -374,6 +393,33 @@ function renderStaffDetail() {
   });
   $("approve-override")?.addEventListener("click",()=>staffAction("approve-override",{}));
   $("audit-details").addEventListener("toggle",()=> { if ($("audit-details").open) loadAudit(r.id); });
+  scheduleStaffAssessment();
+}
+function scheduleStaffAssessment() {
+  clearTimeout(state.staffPollTimer);
+  if (!state.user || $("view-staff").hidden || state.selected?.assessment_state !== "pending") return;
+  const id = state.selected.id;
+  state.staffPollTimer = setTimeout(async()=> {
+    try {
+      const data = await api(`/api/requests/${encodeURIComponent(id)}`);
+      if (!state.user || state.selected?.id !== id || $("view-staff").hidden) return;
+      if (data.request.version < state.selected.version) return;
+      state.selected = data.request;
+      if (data.request.assessment_state !== "pending") {
+        const focused = document.activeElement;
+        const focusId = focused?.id;
+        const selection = focused?.tagName === "TEXTAREA" ? [focused.selectionStart,focused.selectionEnd] : null;
+        renderStaffDetail();
+        if (focusId && $(focusId)) {
+          $(focusId).focus({preventScroll:true});
+          if (selection) $(focusId).setSelectionRange(...selection);
+        }
+        loadQueue({refreshSelected:false});
+      } else scheduleStaffAssessment();
+    } catch {
+      // A manual refresh remains available; stop automatic retries on a network error.
+    }
+  },1000);
 }
 async function staffAction(action,body) {
   const selected = state.selected;
@@ -382,9 +428,10 @@ async function staffAction(action,body) {
     const data = await post(`/api/requests/${encodeURIComponent(selected.id)}/${action}`,{expected_version:selected.version,...body});
     state.selected = data.request;
     if (action === "review") delete state.reviewDrafts[selected.id];
+    if (action === "book") delete state.bookingDrafts[selected.id];
     staffMessage(action === "book" ? "Synthetic appointment booking saved. No external notification was sent." : "Staff action saved with its audit history.");
     renderStaffDetail();
-    loadQueue();
+    loadQueue({refreshSelected:false});
   } catch(error) {
     if (error.status === 409) {
       staffMessage(`Your action was not applied. ${error.message} Review the latest state and intentionally resubmit.`,true);
@@ -413,6 +460,7 @@ async function initialize() {
       if (option) { option.disabled = !item.available; option.textContent = item.label + (item.available ? "" : " · unavailable"); }
     }
     for (const item of state.config.emergency_questions || []) if (warningText[item.id]) warningText[item.id] = item.text;
+    if (state.config.default_variant && !state.submission) $("assessment-mode").value = state.config.default_variant;
     document.querySelector(".policy-tag strong").textContent = state.config.policy_version || "demo-policy-0.3";
     document.querySelector("footer>span:last-child").textContent = state.config.policy_version || "demo-policy-0.3";
   }
@@ -421,6 +469,48 @@ async function initialize() {
     for (const fixture of state.fixtures) $("fixture-select").add(new Option(`${fixture.id} · ${fixture.title}`,fixture.id));
   } else $("fixture-note").textContent = "Synthetic scenarios could not be loaded. The emergency notice and immediate checks remain available.";
   updateModeNote();
+  refreshAIStatus();
 }
 initialize();
 if (window.location.pathname === "/staff") showView("staff");
+
+
+async function refreshAIStatus() {
+  clearTimeout(state.aiStatusTimer);
+  const button = $("refresh-ai");
+  button.disabled = true;
+  try {
+    const status = await api("/api/ai/status");
+    state.aiStatus = status;
+    $("ai-status").textContent = status.available ? "Connected" : status.status === "model_missing" ? "Model needed" : "Offline";
+    $("ai-status").className = `model-status ${status.available ? "ready" : "offline"}`;
+    $("ai-model").textContent = status.model || "Local language model";
+    $("ai-status-message").textContent = status.available ? "Ready to read your next request. Processing stays on this computer." : status.message || "Start the local model, then check again. Requests can still go to staff review.";
+  } catch {
+    $("ai-status").textContent = "Unavailable";
+    $("ai-status").className = "model-status offline";
+    $("ai-model").textContent = "Local language model";
+    $("ai-status-message").textContent = "Cannot reach the AI status service. Check that CareRoute is running, then try again.";
+  } finally {
+    button.disabled = false;
+    state.aiStatusTimer = setTimeout(refreshAIStatus, 15000);
+  }
+}
+$("refresh-ai").addEventListener("click", refreshAIStatus);
+
+function aiResultHTML(request, staff=false) {
+  if (request.variant !== "local_ai") return "";
+  const ai = request.ai || {};
+  const pending = request.assessment_state === "pending" || ai.status === "pending";
+  if (pending) {
+    const elapsed = state.aiStartedAt ? Math.floor((Date.now() - state.aiStartedAt) / 1000) : 0;
+    return `<section class="ai-result pending" aria-label="AI assessment progress"><div class="ai-result-heading"><span class="activity-ring" aria-hidden="true"></span><h3>Local AI is reading the request</h3></div><p>Checking meaning, context and missing details. ${elapsed > 4 ? `${elapsed} seconds elapsed. ` : ""}The first request may take longer while the model loads.</p><div class="processing-steps"><span>Request saved</span><span class="active">AI assessment</span><span>Staff review</span></div><small>Emergency guidance does not wait for the model.</small></section>`;
+  }
+  if (ai.status !== "valid") return `<section class="ai-result unavailable"><div class="ai-result-heading"><span aria-hidden="true">!</span><h3>Staff review will take it from here</h3></div><p>${escapeHTML(ai.error || "A valid local AI assessment was not available. Your saved request can still be reviewed by staff.")}</p><small>No AI result has been substituted.</small></section>`;
+  const metrics = [ai.model || "Ollama", Number.isFinite(ai.latency_ms) ? `${(ai.latency_ms/1000).toFixed(1)} s` : null, Number.isFinite(ai.completion_tokens) ? `${ai.completion_tokens} output tokens` : null].filter(Boolean);
+  const evidence = Array.isArray(ai.evidence) ? ai.evidence : [];
+  const fields = request.assessment?.assessment;
+  const labels = {warning:"Current warning",intent:"Request intent",information_sufficiency:"Information",contradiction:"Conflicting details",scope:"Demo scope",human_review_indication:"Additional review"};
+  const valueLabel = v => v === true ? "Yes" : v === false ? "No" : readable(v);
+  return `<section class="ai-result"><div class="ai-result-heading"><span class="ai-icon" aria-hidden="true">✳</span><h3>AI handoff</h3><span class="live-badge">Live inference</span></div><p class="ai-summary">${escapeHTML(ai.summary || "The model assessed the request. Review the original description alongside the routing suggestion.")}</p>${evidence.length ? `<details class="evidence-details"><summary>Source excerpts (${evidence.length})</summary>${evidence.map(e=>`<blockquote>${escapeHTML(e.quote)}</blockquote>`).join("")}</details>` : ""}${staff && fields ? `<dl class="ai-fields">${Object.entries(labels).map(([key,label])=>`<div><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(valueLabel(fields[key]))}</dd></div>`).join("")}</dl>` : ""}<div class="ai-metrics">${metrics.map(m=>`<span>${escapeHTML(m)}</span>`).join("")}</div><small>AI-selected excerpts from the request. Staff verify the context.</small></section>`;
+}

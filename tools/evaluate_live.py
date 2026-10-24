@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Paired live-model runner for invented fixtures. Dry-run by default.
 
-Actual requests require --execute and configured credentials. These visible
+Actual requests require --execute. Local AI needs Ollama; cloud adapters need
+configured credentials. These visible
 development cases are not a held-out or clinically adjudicated benchmark.
 """
 import argparse
@@ -23,8 +24,8 @@ from tools.evaluate import route_metrics
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--execute', action='store_true', help='Explicitly authorize billable API requests for invented fixtures')
-    parser.add_argument('--arms', nargs='+', choices=['jev_direct','jev_decomposed','llm'], default=['jev_direct','jev_decomposed','llm'])
+    parser.add_argument('--execute', action='store_true', help='Run real inference (cloud arms may incur charges)')
+    parser.add_argument('--arms', nargs='+', choices=['local_ai','jev_direct','jev_decomposed','llm'], default=['local_ai'])
     parser.add_argument('--limit', type=int, default=43)
     parser.add_argument('--output-dir', default=str(ROOT/'reports/live'))
     args=parser.parse_args()
@@ -36,10 +37,10 @@ def main():
     plan={'mode':'dry_run' if not args.execute else 'live_requested', 'policy_version':POLICY_VERSION,
           'arms':args.arms,'case_ids':[c['id'] for c in cases], 'maximum_requests':len(cases)*len(args.arms),
           'fixture_sha256':hashlib.sha256(data).hexdigest(),
-          'warning':'Authored visible development cases only; no clinical or held-out performance claim. Actual calls may incur vendor charges.'}
+          'warning':'Authored visible development cases only; no clinical or held-out performance claim. Local inference has no API charge; cloud arms may incur charges.'}
     print(json.dumps(plan,indent=2))
     if not args.execute:
-        print('No model calls made. Add --execute only after configuring keys and reviewing this plan.')
+        print('No model calls made. Add --execute to run the selected configured models.')
         return
     missing=[]
     if any(a.startswith('jev_') for a in args.arms) and not (os.getenv('TYPESAFE_API_KEY') or os.getenv('JEV_API_KEY')):
@@ -48,6 +49,11 @@ def main():
         missing.extend(name for name in ['CLINIC_LLM_API_KEY','CLINIC_LLM_MODEL'] if not os.getenv(name))
     if missing:
         parser.error('Missing configuration names: '+', '.join(missing)+'. Supply values securely; no calls were made.')
+    if 'local_ai' in args.arms:
+        from clinic.assessors import local_status
+        status = local_status()
+        if not status['available']:
+            parser.error('Local AI is not ready: '+status['message'])
     run_id=datetime.now(timezone.utc).strftime('%Y%m%dT%H%M%S.%fZ')
     out=Path(args.output_dir)/run_id; out.mkdir(parents=True,exist_ok=False)
     (out/'plan.json').write_text(json.dumps(plan,indent=2)+'\n')
@@ -71,6 +77,7 @@ def main():
                      'attempt':attempt,'decision':decision}
                 arms[arm].append(row)
                 log.write(json.dumps({'arm':arm,**row},allow_nan=False)+'\n'); log.flush()
+                print(f"{case['id']} {arm}: {decision['route']} ({attempt['model_status']}, {row['elapsed_seconds']:.1f}s)", flush=True)
     report={'run_id':run_id,**plan,'arms':{arm:{'metrics':route_metrics(rows),'cases':rows} for arm,rows in arms.items()},
             'limits':['No clinical ground truth','Not held-out data','No real reviewer minutes or UI timing','Provider errors remain in denominators','No automatic winner selection']}
     (out/'results.json').write_text(json.dumps(report,indent=2,allow_nan=False)+'\n')

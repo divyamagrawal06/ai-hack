@@ -1,0 +1,191 @@
+{
+  "timestamp": "2026-10-24T22:37:36.427253+00:00",
+  "source_run": "reports/live/20261024T223602.269157Z/results.json",
+  "model": "qwen3:4b-instruct",
+  "attempted": 43,
+  "valid_inferences": 43,
+  "runtime": {
+    "name": "Ollama",
+    "version": "0.40.11",
+    "source": "https://github.com/ollama/ollama/releases/tag/v0.40.11",
+    "backend": "Vulkan",
+    "cloud_disabled": true,
+    "bind": "loopback"
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "total_memory_mib": 8188,
+    "used_memory_mib_after_inference": 3710,
+    "loaded_model_bytes": 3877571133,
+    "model_vram_bytes": 3877571133,
+    "context_length": 8192,
+    "offloaded_layers": 37,
+    "total_layers": 37,
+    "offload_evidence": "offloaded 37/37 layers to GPU"
+  },
+  "route_agreement": {
+    "matches": 36,
+    "compared": 38,
+    "mismatches": [
+      {
+        "id": "FX-14",
+        "expected": "same_day_human_review",
+        "actual": "routine_appointment"
+      },
+      {
+        "id": "FX-28",
+        "expected": "same_day_human_review",
+        "actual": "emergency_guidance"
+      }
+    ]
+  },
+  "valid_inference_latency_seconds": {
+    "median": 1.5033,
+    "p95": 1.6417
+  },
+  "metrics": {
+    "reference_scored_cases": 38,
+    "reference_excluded_cases": [
+      {
+        "id": "FX-19",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-20",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-21",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-22",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-23",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      }
+    ],
+    "emergency_route_miss_rate": {
+      "numerator": 0,
+      "denominator": 13,
+      "rate": 0.0
+    },
+    "emergency_route_miss_cases": [],
+    "incorrect_routine_per_reference_nonroutine": {
+      "numerator": 1,
+      "denominator": 32,
+      "rate": 0.03125
+    },
+    "incorrect_routine_per_routine_suggestion": {
+      "numerator": 1,
+      "denominator": 7,
+      "rate": 0.14285714285714285
+    },
+    "incorrect_routine_cases": [
+      "FX-14"
+    ],
+    "unnecessary_escalation_per_reference_routine": {
+      "numerator": 0,
+      "denominator": 6,
+      "rate": 0.0
+    },
+    "unnecessary_escalation_cases": [],
+    "observed_route_counts": {
+      "routine_appointment": 12,
+      "same_day_human_review": 17,
+      "emergency_guidance": 14
+    },
+    "execution_failures": {
+      "count": 0,
+      "case_ids": []
+    },
+    "same_day_review_suggestions": 17,
+    "nonemergency_saved_requests_requiring_staff_review": 29,
+    "reviewer_minutes": null,
+    "emergency_guidance_ui_latency_ms": null,
+    "calibration": null,
+    "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
+  },
+  "no_ai_metrics": {
+    "reference_scored_cases": 38,
+    "reference_excluded_cases": [
+      {
+        "id": "FX-19",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-20",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-21",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-22",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      },
+      {
+        "id": "FX-23",
+        "reason": "AI-fault/output-specific reference; not independent input disposition"
+      }
+    ],
+    "emergency_route_miss_rate": {
+      "numerator": 0,
+      "denominator": 13,
+      "rate": 0.0
+    },
+    "emergency_route_miss_cases": [],
+    "incorrect_routine_per_reference_nonroutine": {
+      "numerator": 0,
+      "denominator": 32,
+      "rate": 0.0
+    },
+    "incorrect_routine_per_routine_suggestion": {
+      "numerator": 0,
+      "denominator": 0,
+      "rate": null
+    },
+    "incorrect_routine_cases": [],
+    "unnecessary_escalation_per_reference_routine": {
+      "numerator": 6,
+      "denominator": 6,
+      "rate": 1.0
+    },
+    "unnecessary_escalation_cases": [
+      "FX-01",
+      "FX-25",
+      "FX-26",
+      "FX-34",
+      "FX-40",
+      "FX-41"
+    ],
+    "observed_route_counts": {
+      "same_day_human_review": 30,
+      "emergency_guidance": 13
+    },
+    "execution_failures": {
+      "count": 0,
+      "case_ids": []
+    },
+    "same_day_review_suggestions": 30,
+    "nonemergency_saved_requests_requiring_staff_review": 30,
+    "reviewer_minutes": null,
+    "emergency_guidance_ui_latency_ms": null,
+    "calibration": null,
+    "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
+  },
+  "unit_tests": 134,
+  "unit_failures": 0,
+  "browser_checks": 12,
+  "browser_failures": 0,
+  "live_browser_checks": 5,
+  "semantic_probes": {
+    "passed": 8,
+    "attempted": 8,
+    "failed_case_ids": []
+  },
+  "limits": "Visible invented development cases, no clinical ground truth or held-out performance claim."
+}

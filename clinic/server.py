@@ -5,8 +5,10 @@ import json
 import mimetypes
 import os
 import secrets
+import socket
 import sqlite3
 import threading
+import time
 from concurrent.futures import ThreadPoolExecutor
 from http import HTTPStatus
 from http.cookies import SimpleCookie
@@ -18,7 +20,7 @@ from .storage import Store, StoreError
 from . import policy, assessors, config
 
 ROOT = Path(__file__).resolve().parents[1]
-VARIANTS = {"no_ai", "replay", "jev_direct", "jev_decomposed", "llm"}
+VARIANTS = {"local_ai", "no_ai", "replay", "jev_direct", "jev_decomposed", "llm"}
 USERS = {"reviewer": ("demo-reviewer", "reviewer"), "supervisor": ("demo-supervisor", "supervisor")}
 
 
@@ -108,7 +110,7 @@ def retain_reported_guidance(decision, events):
 def validate_submission(payload):
     if payload.get("synthetic") is not True:
         raise StoreError(422, "Confirm that all entered information is newly invented synthetic data")
-    variant = payload.get("variant", "no_ai")
+    variant = payload.get("variant", "local_ai")
     if not isinstance(variant, str) or variant not in VARIANTS:
         raise StoreError(422, "Unknown assessment variant")
     validate_inputs(payload.get("inputs"))
@@ -124,7 +126,14 @@ def validate_submission(payload):
 
 class ClinicServer(ThreadingHTTPServer):
     daemon_threads = True
-    allow_reuse_address = True
+    # Windows SO_REUSEADDR permits an unrelated second listener on the same port.
+    # Unix keeps fast restart semantics; Windows instead claims the port exclusively.
+    allow_reuse_address = os.name != "nt"
+
+    def server_bind(self):
+        if os.name == "nt":
+            self.socket.setsockopt(socket.SOL_SOCKET, socket.SO_EXCLUSIVEADDRUSE, 1)
+        super().server_bind()
 
     def __init__(self, address, store):
         super().__init__(address, Handler)
@@ -166,8 +175,13 @@ class ClinicServer(ThreadingHTTPServer):
         self.pool.submit(job)
 
     def server_close(self):
-        self.stopping.set()
-        self.pool.shutdown(wait=True, cancel_futures=False)
+        # TCPServer calls this on bind failure before our worker fields exist.
+        if hasattr(self, "stopping"):
+            self.stopping.set()
+        if hasattr(self, "sweeper"):
+            self.sweeper.join(timeout=3)
+        if hasattr(self, "pool"):
+            self.pool.shutdown(wait=True, cancel_futures=False)
         super().server_close()
 
 
@@ -239,12 +253,41 @@ class Handler(BaseHTTPRequestHandler):
         if length <= 0 or length > 65536:
             raise StoreError(413, "JSON request must be between 1 and 65536 bytes")
         try:
-            payload = strict_json(self.rfile.read(length))
+            body = self.rfile.read(length)
+            self._body_consumed = True
+            payload = strict_json(body)
         except (ValueError, UnicodeDecodeError):
             raise StoreError(400, "Malformed JSON, duplicate keys or non-finite values")
         if not isinstance(payload, dict):
             raise StoreError(400, "JSON body must be an object")
         return payload
+
+    def error_response(self, status, message):
+        # Closing a Windows socket with an unread POST body can reset the
+        # connection before the client receives its 4xx response. Drain only a
+        # bounded, declared small body, without giving rejected requests a long wait.
+        if self.command == "POST" and not getattr(self, "_body_consumed", False):
+            try:
+                length = int(self.headers.get("Content-Length", "0"))
+                if 0 < length <= 65536 and not self.headers.get("Transfer-Encoding"):
+                    deadline = time.monotonic() + .5
+                    while length:
+                        remaining = deadline - time.monotonic()
+                        if remaining <= 0:
+                            break
+                        self.connection.settimeout(remaining)
+                        chunk = self.rfile.read1(min(length, 8192))
+                        if not chunk:
+                            break
+                        length -= len(chunk)
+            except (ValueError, OSError):
+                pass
+            finally:
+                self.connection.settimeout(15)
+        try:
+            self.json_response(status, {"error": message})
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
+            pass
 
     def do_GET(self):
         self.dispatch("GET")
@@ -253,6 +296,7 @@ class Handler(BaseHTTPRequestHandler):
         self.dispatch("POST")
 
     def dispatch(self, method):
+        self._body_consumed = False
         try:
             self.check_request()
             url = urlsplit(self.path)
@@ -262,13 +306,13 @@ class Handler(BaseHTTPRequestHandler):
             else:
                 self.post(path, self.read_json())
         except StoreError as error:
-            self.json_response(error.status, {"error": error.message})
+            self.error_response(error.status, error.message)
         except sqlite3.Error:
-            self.json_response(503, {"error": "Storage is unavailable. Receipt or changes cannot be confirmed. Emergency guidance remains independent."})
-        except (BrokenPipeError, ConnectionResetError):
+            self.error_response(503, "Storage is unavailable. Receipt or changes cannot be confirmed. Emergency guidance remains independent.")
+        except (BrokenPipeError, ConnectionResetError, ConnectionAbortedError):
             pass
         except Exception:
-            self.json_response(500, {"error": "The request could not be completed. No successful save or notification is implied."})
+            self.error_response(500, "The request could not be completed. No successful save or notification is implied.")
 
     def get(self, path, query):
         if path == "/api/health":
@@ -277,10 +321,12 @@ class Handler(BaseHTTPRequestHandler):
             return self.json_response(200, {"status": "ok", "synthetic_only": True})
         if path == "/api/config":
             return self.json_response(200, config.public_config())
+        if path == "/api/ai/status":
+            return self.json_response(200, assessors.local_status())
         if path == "/api/session":
             return self.json_response(200, {"user": self.user()})
         if path == "/api/fixtures":
-            fixtures = json.loads((ROOT / "fixtures/synthetic-cases.json").read_text())
+            fixtures = json.loads((ROOT / "fixtures/synthetic-cases.json").read_text(encoding="utf-8"))
             return self.json_response(200, {"cases": fixtures["cases"]})
         if path == "/api/queue":
             self.user(required=True)

@@ -1,3 +1,5 @@
+> **Historical baseline report.** These sections describe the pre-local-AI tests. For the current build, use [the submission report](submission-report.md), [current automated results](generated/test-results.json), [current browser results](generated/browser-results.json), and the live-model evidence linked from the submission report.
+
 # Executed verification and requirement coverage
 
 Final policy: **demo-policy-0.3**. Detailed outcomes are stored in [test-results.json](generated/test-results.json), [tests.log](generated/tests.log), [browser-results.json](generated/browser-results.json) and [evaluation.json](generated/evaluation.json). No model service was called during these runs.

@@ -1,0 +1,74 @@
+{
+  "recorded_at": "2026-10-24T22:29:23.574003+00:00",
+  "runtime": {
+    "name": "Ollama",
+    "version": "0.40.11",
+    "source": "https://github.com/ollama/ollama/releases/tag/v0.40.11",
+    "backend": "Vulkan",
+    "cloud_disabled": true,
+    "bind": "loopback"
+  },
+  "model": {
+    "name": "qwen3:4b-instruct",
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "disk_bytes": 2497293803,
+    "details": {
+      "parent_model": "",
+      "format": "gguf",
+      "family": "qwen3",
+      "families": [
+        "qwen3"
+      ],
+      "parameter_size": "4.0B",
+      "quantization_level": "Q4_K_M",
+      "context_length": 262144,
+      "embedding_length": 2560,
+      "runner": "ggml"
+    },
+    "source": "https://ollama.com/library/qwen3:4b-instruct",
+    "blob_sha256": "85e4a5b7b8ef0e48af0e8658f5aaab9c2324c76c1641493f4d1e25fce54b18b9",
+    "blob_bytes": 2497280480,
+    "blob_hash_verified": true
+  },
+  "gpu": {
+    "name": "NVIDIA GeForce RTX 4060 Laptop GPU",
+    "total_memory_mib": 8188,
+    "used_memory_mib_after_inference": 3710,
+    "loaded_model_bytes": 3877571133,
+    "model_vram_bytes": 3877571133,
+    "context_length": 8192,
+    "offloaded_layers": 37,
+    "total_layers": 37,
+    "offload_evidence": "offloaded 37/37 layers to GPU"
+  },
+  "checks": [
+    {
+      "prompt": "For an invented supply cupboard, there are 7 boxes and 5 more arrive. Return JSON with total_boxes and a short explanation. This is only an arithmetic test.",
+      "response": {
+        "explanation": "There were originally 7 boxes. Then 5 more arrived. So the total number of boxes is 7 + 5 = 12.",
+        "total_boxes": 12
+      },
+      "wall_seconds": 30.643,
+      "done_reason": "stop",
+      "prompt_tokens": 42,
+      "generated_tokens": 48,
+      "generation_seconds": 1.162,
+      "tokens_per_second": 41.31,
+      "load_seconds": 22.81
+    },
+    {
+      "prompt": "For an invented supply cupboard, there are 3 boxes and 8 more arrive. Return JSON with total_boxes and a short explanation. This is only an arithmetic test.",
+      "response": {
+        "explanation": "There were originally 3 boxes. Then 8 more arrived. So the total number of boxes is 3 + 8 = 11.",
+        "total_boxes": 11
+      },
+      "wall_seconds": 0.708,
+      "done_reason": "stop",
+      "prompt_tokens": 42,
+      "generated_tokens": 48,
+      "generation_seconds": 0.632,
+      "tokens_per_second": 75.97,
+      "load_seconds": 0.014
+    }
+  ]
+}

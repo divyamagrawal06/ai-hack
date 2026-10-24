@@ -1,6 +1,6 @@
 # Synthetic policy evaluation
 
-Run: `policy-eval-20261024T181230.235927Z`. Policy: `demo-policy-0.3`. Fixture source: `demo-policy-0.1`.
+Run: `policy-eval-20261024T220415.879954Z`. Policy: `demo-policy-0.3`. Fixture source: `demo-policy-0.1`.
 
 **Executed local policy behavior and authored replay conformance only. No live Jev/LLM calls, clinical evaluation, probability calibration, reviewer-minute measurement, or browser-timing claim.**
 

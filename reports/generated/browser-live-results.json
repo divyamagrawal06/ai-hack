@@ -1,0 +1,81 @@
+{
+  "timestamp": "2026-10-24T22:37:24.675566+00:00",
+  "model_status": {
+    "provider": "ollama",
+    "model": "qwen3:4b-instruct",
+    "local": true,
+    "available": true,
+    "models": [
+      "qwen3:4b-instruct"
+    ],
+    "status": "ready",
+    "message": "qwen3:4b-instruct is installed and ready on this computer.",
+    "digest": "0edcdef34593eac1aa2be9c7d06c432dcf81945adca5eca2f27662c18f168ba0",
+    "parameter_size": "4.0B",
+    "quantization": "Q4_K_M"
+  },
+  "scope": "Real local inference plus browser, HTTP, SQLite and staff workflow on invented inputs; not clinical validation",
+  "checks": [
+    {
+      "name": "Fresh local inference through browser submission and persisted receipt",
+      "passed": true,
+      "elapsed_seconds": 3.082,
+      "ai": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "status": "valid",
+        "local": true,
+        "latency_ms": 1795,
+        "prompt_tokens": 995,
+        "completion_tokens": 90,
+        "summary": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks.",
+        "summary_kind": "model_selected_verbatim_excerpts",
+        "evidence": [
+          {
+            "quote": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks.",
+            "start": 0,
+            "end": 102
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "Human review, synthetic booking, raw inference and audit persisted",
+      "passed": true
+    },
+    {
+      "name": "A different narrative gets a fresh AI assessment and human-review route",
+      "passed": true,
+      "ai": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "status": "valid",
+        "local": true,
+        "latency_ms": 1861,
+        "prompt_tokens": 985,
+        "completion_tokens": 79,
+        "summary": "I have an appointment question that needs a staff member today.",
+        "summary_kind": "model_selected_verbatim_excerpts",
+        "evidence": [
+          {
+            "quote": "I have an appointment question that needs a staff member today.",
+            "start": 0,
+            "end": 63
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "Unavailable model retains human fallback and immediate pre-submit guidance",
+      "passed": true
+    },
+    {
+      "name": "Mobile layout and no uncaught browser errors",
+      "passed": true
+    }
+  ],
+  "passed": 5,
+  "browser_errors": []
+}

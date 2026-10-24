@@ -1,6 +1,6 @@
 .PHONY: run test evaluate browser package
 run:
-	python3 -m clinic.server --port 8080 --db var/demo.sqlite3
+	python3 -X utf8 tools/start_demo.py
 test:
 	python3 tools/run_checks.py
 evaluate:
