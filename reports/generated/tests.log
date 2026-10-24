@@ -1,0 +1,170 @@
+test_after_hours_preserves_route_and_truthful_unavailability (test_api.ApiTests.test_after_hours_preserves_route_and_truthful_unavailability) ... ok
+test_audit_cannot_be_updated_or_deleted (test_api.ApiTests.test_audit_cannot_be_updated_or_deleted) ... ok
+test_booking_requires_review_explicit_timezone_and_confirmation (test_api.ApiTests.test_booking_requires_review_explicit_timezone_and_confirmation) ... ok
+test_claim_and_concurrent_override_conflict_are_audited (test_api.ApiTests.test_claim_and_concurrent_override_conflict_are_audited) ... ok
+test_corrected_input_retains_reported_prior_emergency_guidance (test_api.ApiTests.test_corrected_input_retains_reported_prior_emergency_guidance) ... ok
+test_cross_origin_host_and_content_type_rejected (test_api.ApiTests.test_cross_origin_host_and_content_type_rejected) ... ok
+test_duplicate_json_and_nonfinite_rejected (test_api.ApiTests.test_duplicate_json_and_nonfinite_rejected) ... ok
+test_emergency_downgrade_requires_different_supervisor (test_api.ApiTests.test_emergency_downgrade_requires_different_supervisor) ... ok
+test_emergency_receipt_precedes_slow_assessment (test_api.ApiTests.test_emergency_receipt_precedes_slow_assessment) ... ok
+test_emergency_revision_is_immediate_and_invalidates_old_booking (test_api.ApiTests.test_emergency_revision_is_immediate_and_invalidates_old_booking) ... ok
+test_failed_assessor_preserves_received_and_falls_back (test_api.ApiTests.test_failed_assessor_preserves_received_and_falls_back) ... ok
+test_health_and_synthetic_required (test_api.ApiTests.test_health_and_synthetic_required) ... ok
+test_idempotency_key_payload_conflict (test_api.ApiTests.test_idempotency_key_payload_conflict) ... ok
+test_idempotent_retry_returns_same_receipt_and_single_request (test_api.ApiTests.test_idempotent_retry_returns_same_receipt_and_single_request) ... ok
+test_invalid_enum_types_return_422_not_server_error (test_api.ApiTests.test_invalid_enum_types_return_422_not_server_error) ... ok
+test_login_cookie_logout_and_invalid_password (test_api.ApiTests.test_login_cookie_logout_and_invalid_password) ... ok
+test_malformed_client_history_is_not_trusted_or_retained (test_api.ApiTests.test_malformed_client_history_is_not_trusted_or_retained) ... ok
+test_no_ai_requires_human_narrative_review_before_routine_route (test_api.ApiTests.test_no_ai_requires_human_narrative_review_before_routine_route) ... ok
+test_original_inputs_revisions_and_stale_assessment_are_preserved (test_api.ApiTests.test_original_inputs_revisions_and_stale_assessment_are_preserved) ... ok
+test_overdue_and_expired_claims_escalate_without_delivery_claim (test_api.ApiTests.test_overdue_and_expired_claims_escalate_without_delivery_claim) ... ok
+test_oversized_text_and_unknown_check_rejected_without_truncation (test_api.ApiTests.test_oversized_text_and_unknown_check_rejected_without_truncation) ... ok
+test_pending_durable_assessment_resumes_on_server_restart (test_api.ApiTests.test_pending_durable_assessment_resumes_on_server_restart) ... ok
+test_receipt_and_staff_access_boundaries (test_api.ApiTests.test_receipt_and_staff_access_boundaries) ... ok
+test_receipt_is_distinct_from_review_booking_notification (test_api.ApiTests.test_receipt_is_distinct_from_review_booking_notification) ... ok
+test_restart_retains_records_and_audit (test_api.ApiTests.test_restart_retains_records_and_audit) ... ok
+test_save_failure_never_starts_assessment_or_claims_receipt (test_api.ApiTests.test_save_failure_never_starts_assessment_or_claims_receipt) ... ok
+test_spa_entrypoints_serve_static_emergency_notice (test_api.ApiTests.test_spa_entrypoints_serve_static_emergency_notice) ... ok
+test_staff_can_take_over_pending_model_and_late_output_does_not_apply (test_api.ApiTests.test_staff_can_take_over_pending_model_and_late_output_does_not_apply) ... ok
+test_changed_replay_never_reuses_saved_assessment (test_assessors.AssessorContracts.test_changed_replay_never_reuses_saved_assessment) ... ok
+test_choice_probability_disagreement_is_rejected (test_assessors.AssessorContracts.test_choice_probability_disagreement_is_rejected) ... ok
+test_decomposition_normalizes_only_known_fields (test_assessors.AssessorContracts.test_decomposition_normalizes_only_known_fields) ... ok
+test_direct_adapter_records_request_and_raw_response (test_assessors.AssessorContracts.test_direct_adapter_records_request_and_raw_response) ... ok
+test_exact_replay_is_labelled (test_assessors.AssessorContracts.test_exact_replay_is_labelled) ... ok
+test_failure_replay_remains_degraded (test_assessors.AssessorContracts.test_failure_replay_remains_degraded) ... ok
+test_llm_refusal_and_extra_medical_prose_rejected (test_assessors.AssessorContracts.test_llm_refusal_and_extra_medical_prose_rejected) ... ok
+test_llm_requires_exact_bounded_json (test_assessors.AssessorContracts.test_llm_requires_exact_bounded_json) ... ok
+test_malformed_distributions_and_labels_rejected (test_assessors.AssessorContracts.test_malformed_distributions_and_labels_rejected) ... ok
+test_missing_answers_extra_answers_and_model_identity_rejected (test_assessors.AssessorContracts.test_missing_answers_extra_answers_and_model_identity_rejected) ... ok
+test_missing_credentials_degrade_without_call (test_assessors.AssessorContracts.test_missing_credentials_degrade_without_call) ... ok
+test_no_ai_makes_no_network_call (test_assessors.AssessorContracts.test_no_ai_makes_no_network_call) ... ok
+test_provider_http_error_not_exposed (test_assessors.AssessorContracts.test_provider_http_error_not_exposed) ... ok
+test_rejected_raw_json_retains_text_and_question_provenance (test_assessors.AssessorContracts.test_rejected_raw_json_retains_text_and_question_provenance) ... ok
+test_replay_direct_retains_its_arm (test_assessors.AssessorContracts.test_replay_direct_retains_its_arm) ... ok
+test_unknown_variant_degrades (test_assessors.AssessorContracts.test_unknown_variant_degrades) ... ok
+test_wall_deadline_discards_late_result (test_assessors.AssessorContracts.test_wall_deadline_discards_late_result) ... ok
+test_local_warning_preserves_original_text_without_fabricated_model_spans (test_evidence.EvidenceTests.test_local_warning_preserves_original_text_without_fabricated_model_spans) ... ok
+test_unicode_offsets_round_trip_original_text (test_evidence.EvidenceTests.test_unicode_offsets_round_trip_original_text) ... ok
+test_current_explicit_breathing_warning (test_policy.LocalEmergencyDetectorTests.test_current_explicit_breathing_warning) ... ok
+test_explicit_negation_does_not_trigger (test_policy.LocalEmergencyDetectorTests.test_explicit_negation_does_not_trigger) ... ok
+test_fictional_quote_does_not_suppress_separate_current_warning (test_policy.LocalEmergencyDetectorTests.test_fictional_quote_does_not_suppress_separate_current_warning) ... ok
+test_historical_resolved_warning_does_not_trigger (test_policy.LocalEmergencyDetectorTests.test_historical_resolved_warning_does_not_trigger) ... ok
+test_history_does_not_suppress_new_current_warning (test_policy.LocalEmergencyDetectorTests.test_history_does_not_suppress_new_current_warning) ... ok
+test_local_warning_survives_assessor_timeout (test_policy.LocalEmergencyDetectorTests.test_local_warning_survives_assessor_timeout) ... ok
+test_plain_routine_description_does_not_trigger (test_policy.LocalEmergencyDetectorTests.test_plain_routine_description_does_not_trigger) ... ok
+test_possible_current_overdose_warning (test_policy.LocalEmergencyDetectorTests.test_possible_current_overdose_warning) ... ok
+test_quoted_fiction_is_not_current_emergency_evidence (test_policy.LocalEmergencyDetectorTests.test_quoted_fiction_is_not_current_emergency_evidence) ... ok
+test_sudden_breathing_warning_without_model (test_policy.LocalEmergencyDetectorTests.test_sudden_breathing_warning_without_model) ... ok
+test_swelling_and_worsening_breathing_without_model (test_policy.LocalEmergencyDetectorTests.test_swelling_and_worsening_breathing_without_model) ... ok
+test_third_person_current_warning (test_policy.LocalEmergencyDetectorTests.test_third_person_current_warning) ... ok
+test_uncertain_breathing_warning_without_model (test_policy.LocalEmergencyDetectorTests.test_uncertain_breathing_warning_without_model) ... ok
+test_decomposed_numeric_booleans_are_invalid (test_policy.PolicySafetyInvariantsTests.test_decomposed_numeric_booleans_are_invalid) ... ok
+test_direct_choice_does_not_require_hidden_decomposed_fields (test_policy.PolicySafetyInvariantsTests.test_direct_choice_does_not_require_hidden_decomposed_fields) ... ok
+test_direct_defer_maps_to_review (test_policy.PolicySafetyInvariantsTests.test_direct_defer_maps_to_review) ... ok
+test_direct_emergency_is_preserved (test_policy.PolicySafetyInvariantsTests.test_direct_emergency_is_preserved) ... ok
+test_direct_malformed_label_types_fail_into_review (test_policy.PolicySafetyInvariantsTests.test_direct_malformed_label_types_fail_into_review) ... ok
+test_direct_routine_cannot_fill_missing_input_by_inference (test_policy.PolicySafetyInvariantsTests.test_direct_routine_cannot_fill_missing_input_by_inference) ... ok
+test_direct_unknown_class_is_rejected (test_policy.PolicySafetyInvariantsTests.test_direct_unknown_class_is_rejected) ... ok
+test_each_structured_yes_or_unsure_precedes_any_assessor (test_policy.PolicySafetyInvariantsTests.test_each_structured_yes_or_unsure_precedes_any_assessor) ... ok
+test_information_missing_does_not_suppress_emergency (test_policy.PolicySafetyInvariantsTests.test_information_missing_does_not_suppress_emergency) ... ok
+test_invalid_or_missing_assessment_never_receives_routine (test_policy.PolicySafetyInvariantsTests.test_invalid_or_missing_assessment_never_receives_routine) ... ok
+test_invalid_response_does_not_partly_support_routine (test_policy.PolicySafetyInvariantsTests.test_invalid_response_does_not_partly_support_routine) ... ok
+test_missing_check_does_not_become_no (test_policy.PolicySafetyInvariantsTests.test_missing_check_does_not_become_no) ... ok
+test_missing_preference_is_incomplete_but_explicit_no_preference_is_valid (test_policy.PolicySafetyInvariantsTests.test_missing_preference_is_incomplete_but_explicit_no_preference_is_valid) ... ok
+test_no_ai_is_an_operating_mode_not_a_model_outage (test_policy.PolicySafetyInvariantsTests.test_no_ai_is_an_operating_mode_not_a_model_outage) ... ok
+test_preferred_times_cannot_lower_route (test_policy.PolicySafetyInvariantsTests.test_preferred_times_cannot_lower_route) ... ok
+test_structured_emergency_overrides_direct_routine (test_policy.PolicySafetyInvariantsTests.test_structured_emergency_overrides_direct_routine) ... ok
+test_unanswered_check_does_not_become_no (test_policy.PolicySafetyInvariantsTests.test_unanswered_check_does_not_become_no) ... ok
+test_unknown_scope_values_never_receive_routine (test_policy.PolicySafetyInvariantsTests.test_unknown_scope_values_never_receive_routine) ... ok
+test_unreviewed_vague_or_conflicting_baseline_narratives_never_receive_routine (test_policy.PolicySafetyInvariantsTests.test_unreviewed_vague_or_conflicting_baseline_narratives_never_receive_routine) ... ok
+test_FX_01 (test_policy.ReplayPolicyConformanceTests.test_FX_01)
+FX-01: Supported routine request (authored replay, not model evaluation). ... ok
+test_FX_02 (test_policy.ReplayPolicyConformanceTests.test_FX_02)
+FX-02: Urgent self report overrides otherwise routine assessment (authored replay, not model evaluation). ... ok
+test_FX_03 (test_policy.ReplayPolicyConformanceTests.test_FX_03)
+FX-03: Structured emergency yes before submission (authored replay, not model evaluation). ... ok
+test_FX_04 (test_policy.ReplayPolicyConformanceTests.test_FX_04)
+FX-04: Structured emergency unsure before submission (authored replay, not model evaluation). ... ok
+test_FX_05 (test_policy.ReplayPolicyConformanceTests.test_FX_05)
+FX-05: Emergency cannot wait for preferred appointment (authored replay, not model evaluation). ... ok
+test_FX_06 (test_policy.ReplayPolicyConformanceTests.test_FX_06)
+FX-06: Explicit current local text warning despite all no answers (authored replay, not model evaluation). ... ok
+test_FX_07 (test_policy.ReplayPolicyConformanceTests.test_FX_07)
+FX-07: Possible current local text emergency with missing context (authored replay, not model evaluation). ... ok
+test_FX_08 (test_policy.ReplayPolicyConformanceTests.test_FX_08)
+FX-08: Warning discovered only by bounded assessment (authored replay, not model evaluation). ... ok
+test_FX_09 (test_policy.ReplayPolicyConformanceTests.test_FX_09)
+FX-09: Model possible warning (authored replay, not model evaluation). ... ok
+test_FX_10 (test_policy.ReplayPolicyConformanceTests.test_FX_10)
+FX-10: Blank description (authored replay, not model evaluation). ... ok
+test_FX_11 (test_policy.ReplayPolicyConformanceTests.test_FX_11)
+FX-11: Vague concern (authored replay, not model evaluation). ... ok
+test_FX_12 (test_policy.ReplayPolicyConformanceTests.test_FX_12)
+FX-12: Unanswered emergency item (authored replay, not model evaluation). ... ok
+test_FX_13 (test_policy.ReplayPolicyConformanceTests.test_FX_13)
+FX-13: Unknown self-reported urgency (authored replay, not model evaluation). ... ok
+test_FX_14 (test_policy.ReplayPolicyConformanceTests.test_FX_14)
+FX-14: Contradictory onset with no emergency indicator (authored replay, not model evaluation). ... ok
+test_FX_15 (test_policy.ReplayPolicyConformanceTests.test_FX_15)
+FX-15: Outside supported pediatric scope (authored replay, not model evaluation). ... ok
+test_FX_16 (test_policy.ReplayPolicyConformanceTests.test_FX_16)
+FX-16: Outside supported older adult demo scope (authored replay, not model evaluation). ... ok
+test_FX_17 (test_policy.ReplayPolicyConformanceTests.test_FX_17)
+FX-17: Unsupported language (authored replay, not model evaluation). ... ok
+test_FX_18 (test_policy.ReplayPolicyConformanceTests.test_FX_18)
+FX-18: Unknown supported population (authored replay, not model evaluation). ... ok
+test_FX_19 (test_policy.ReplayPolicyConformanceTests.test_FX_19)
+FX-19: Model timeout after ten seconds (authored replay, not model evaluation). ... ok
+test_FX_20 (test_policy.ReplayPolicyConformanceTests.test_FX_20)
+FX-20: Malformed model object (authored replay, not model evaluation). ... ok
+test_FX_21 (test_policy.ReplayPolicyConformanceTests.test_FX_21)
+FX-21: Model transport error (authored replay, not model evaluation). ... ok
+test_FX_22 (test_policy.ReplayPolicyConformanceTests.test_FX_22)
+FX-22: Direct Jev explicitly defers (authored replay, not model evaluation). ... ok
+test_FX_23 (test_policy.ReplayPolicyConformanceTests.test_FX_23)
+FX-23: Direct Jev suggests same-day review (authored replay, not model evaluation). ... ok
+test_FX_24 (test_policy.ReplayPolicyConformanceTests.test_FX_24)
+FX-24: Decomposed assessor identifies review requirement (authored replay, not model evaluation). ... ok
+test_FX_25 (test_policy.ReplayPolicyConformanceTests.test_FX_25)
+FX-25: Negated warning phrase in sufficient routine text (authored replay, not model evaluation). ... ok
+test_FX_26 (test_policy.ReplayPolicyConformanceTests.test_FX_26)
+FX-26: Historical resolved warning in otherwise routine request (authored replay, not model evaluation). ... ok
+test_FX_27 (test_policy.ReplayPolicyConformanceTests.test_FX_27)
+FX-27: Third-person current emergency in text (authored replay, not model evaluation). ... ok
+test_FX_28 (test_policy.ReplayPolicyConformanceTests.test_FX_28)
+FX-28: Quoted fictional warning and prompt injection (authored replay, not model evaluation). ... ok
+test_FX_29 (test_policy.ReplayPolicyConformanceTests.test_FX_29)
+FX-29: Emergency local check survives model timeout (authored replay, not model evaluation). ... ok
+test_FX_30 (test_policy.ReplayPolicyConformanceTests.test_FX_30)
+FX-30: Emergency survives failed save (authored replay, not model evaluation). ... ok
+test_FX_32 (test_policy.ReplayPolicyConformanceTests.test_FX_32)
+FX-32: Same-day request after hours (authored replay, not model evaluation). ... ok
+test_FX_33 (test_policy.ReplayPolicyConformanceTests.test_FX_33)
+FX-33: Same-day request with no available reviewer (authored replay, not model evaluation). ... ok
+test_FX_34 (test_policy.ReplayPolicyConformanceTests.test_FX_34)
+FX-34: Preferred routine slot unavailable (authored replay, not model evaluation). ... ok
+test_FX_35 (test_policy.ReplayPolicyConformanceTests.test_FX_35)
+FX-35: Unsupported scope cannot suppress emergency (authored replay, not model evaluation). ... ok
+test_FX_36 (test_policy.ReplayPolicyConformanceTests.test_FX_36)
+FX-36: Direct routine output cannot override emergency guard (authored replay, not model evaluation). ... ok
+test_FX_37 (test_policy.ReplayPolicyConformanceTests.test_FX_37)
+FX-37: Direct routine output cannot erase missing information (authored replay, not model evaluation). ... ok
+test_FX_38 (test_policy.ReplayPolicyConformanceTests.test_FX_38)
+FX-38: Direct model emergency classification (authored replay, not model evaluation). ... ok
+test_FX_39 (test_policy.ReplayPolicyConformanceTests.test_FX_39)
+FX-39: Non-emergency uncertainty still requires review (authored replay, not model evaluation). ... ok
+test_FX_40 (test_policy.ReplayPolicyConformanceTests.test_FX_40)
+FX-40: Routine replay fixture with honest mode labeling (authored replay, not model evaluation). ... ok
+test_FX_41 (test_policy.ReplayPolicyConformanceTests.test_FX_41)
+FX-41: All no answers with explicit no time preference (authored replay, not model evaluation). ... ok
+test_FX_42 (test_policy.ReplayPolicyConformanceTests.test_FX_42)
+FX-42: Urgent case with long scheduling delay requested (authored replay, not model evaluation). ... ok
+test_FX_43 (test_policy.ReplayPolicyConformanceTests.test_FX_43)
+FX-43: Declared pregnancy outside illustrative routine scope (authored replay, not model evaluation). ... ok
+test_FX_44 (test_policy.ReplayPolicyConformanceTests.test_FX_44)
+FX-44: Missing onset and currentness information (authored replay, not model evaluation). ... ok
+
+----------------------------------------------------------------------
+Ran 122 tests in 14.274s
+
+OK

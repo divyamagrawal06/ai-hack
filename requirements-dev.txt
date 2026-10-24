@@ -1,0 +1,2 @@
+# Runtime uses only the Python standard library. Browser verification is optional.
+playwright==1.62.0

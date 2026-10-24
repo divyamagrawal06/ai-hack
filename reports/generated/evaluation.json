@@ -1,0 +1,1769 @@
+{
+  "run_id": "policy-eval-20261024T181230.235927Z",
+  "created_at": "2026-10-24T18:12:30.235927+00:00",
+  "policy_version": "demo-policy-0.3",
+  "fixture_policy_version": "demo-policy-0.1",
+  "fixture_set_version": "synthetic-v0.1",
+  "fixture_sha256": "eebad8e34e9a81dcbb068a8a1e2725c4d2c3ab0cc328de67a0a71ac5a5e42b69",
+  "live_model_calls": 0,
+  "clinical_validation": false,
+  "no_ai": {
+    "mode": "no_ai",
+    "evidence_kind": "executed_local_policy_behavior",
+    "baseline_decision_policy": "Unreviewed ordinary narratives defer to human review via H05; no-AI cannot affirm narrative sufficiency.",
+    "attempted_policy_cases": 43,
+    "no_decision_cases": [
+      {
+        "id": "FX-31",
+        "reason": "Initial ordinary save fails; no decision/model call is permitted. Persistence/API test required."
+      }
+    ],
+    "metrics": {
+      "reference_scored_cases": 38,
+      "reference_excluded_cases": [
+        {
+          "id": "FX-19",
+          "reason": "Reference action is AI-only failure fallback, with no independent clinical label."
+        },
+        {
+          "id": "FX-20",
+          "reason": "Reference action is AI-only failure fallback, with no independent clinical label."
+        },
+        {
+          "id": "FX-21",
+          "reason": "Reference action is AI-only failure fallback, with no independent clinical label."
+        },
+        {
+          "id": "FX-22",
+          "reason": "Reference action follows an authored direct-model output, not an independently adjudicated input disposition."
+        },
+        {
+          "id": "FX-23",
+          "reason": "Reference action follows an authored direct-model output, not an independently adjudicated input disposition."
+        }
+      ],
+      "emergency_route_miss_rate": {
+        "numerator": 0,
+        "denominator": 13,
+        "rate": 0.0
+      },
+      "emergency_route_miss_cases": [],
+      "incorrect_routine_per_reference_nonroutine": {
+        "numerator": 0,
+        "denominator": 32,
+        "rate": 0.0
+      },
+      "incorrect_routine_per_routine_suggestion": {
+        "numerator": 0,
+        "denominator": 0,
+        "rate": null
+      },
+      "incorrect_routine_cases": [],
+      "unnecessary_escalation_per_reference_routine": {
+        "numerator": 6,
+        "denominator": 6,
+        "rate": 1.0
+      },
+      "unnecessary_escalation_cases": [
+        "FX-01",
+        "FX-25",
+        "FX-26",
+        "FX-34",
+        "FX-40",
+        "FX-41"
+      ],
+      "observed_route_counts": {
+        "same_day_human_review": 30,
+        "emergency_guidance": 13
+      },
+      "execution_failures": {
+        "count": 0,
+        "case_ids": []
+      },
+      "same_day_review_suggestions": 30,
+      "nonemergency_saved_requests_requiring_staff_review": 30,
+      "reviewer_minutes": null,
+      "emergency_guidance_ui_latency_ms": null,
+      "calibration": null,
+      "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
+    },
+    "cases": [
+      {
+        "id": "FX-01",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-02",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H02",
+        "local_signal": "none",
+        "matched_rules": [
+          "H02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-03",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "not_attempted",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E01",
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-04",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "not_attempted",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "none",
+        "matched_rules": [
+          "E01",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-05",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E01",
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-06",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-07",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_possible_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-08",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-09",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-10",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H01",
+        "local_signal": "none",
+        "matched_rules": [
+          "H01",
+          "H05"
+        ],
+        "information_sufficiency": "insufficient",
+        "error": null
+      },
+      {
+        "id": "FX-11",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-12",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H01",
+        "local_signal": "none",
+        "matched_rules": [
+          "H01",
+          "H05"
+        ],
+        "information_sufficiency": "insufficient",
+        "error": null
+      },
+      {
+        "id": "FX-13",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H02",
+        "local_signal": "none",
+        "matched_rules": [
+          "H02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-14",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-15",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H03",
+        "local_signal": "none",
+        "matched_rules": [
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-16",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H03",
+        "local_signal": "none",
+        "matched_rules": [
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-17",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H03",
+        "local_signal": "none",
+        "matched_rules": [
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-18",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H01",
+        "local_signal": "none",
+        "matched_rules": [
+          "H01",
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "insufficient",
+        "error": null
+      },
+      {
+        "id": "FX-19",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H04",
+        "reference_comparison_included": false,
+        "exclusion_reason": "Reference action is AI-only failure fallback, with no independent clinical label.",
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-20",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H04",
+        "reference_comparison_included": false,
+        "exclusion_reason": "Reference action is AI-only failure fallback, with no independent clinical label.",
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-21",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H04",
+        "reference_comparison_included": false,
+        "exclusion_reason": "Reference action is AI-only failure fallback, with no independent clinical label.",
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-22",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H05",
+        "reference_comparison_included": false,
+        "exclusion_reason": "Reference action follows an authored direct-model output, not an independently adjudicated input disposition.",
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-23",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H05",
+        "reference_comparison_included": false,
+        "exclusion_reason": "Reference action follows an authored direct-model output, not an independently adjudicated input disposition.",
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-24",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H05",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-25",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-26",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-27",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-28",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-29",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-30",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "failed",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E01",
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-32",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H02",
+        "local_signal": "none",
+        "matched_rules": [
+          "H02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-33",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H02",
+        "local_signal": "none",
+        "matched_rules": [
+          "H02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-34",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-35",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "none",
+        "matched_rules": [
+          "E01",
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-36",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E01",
+        "local_signal": "none",
+        "matched_rules": [
+          "E01",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-37",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H01",
+        "local_signal": "none",
+        "matched_rules": [
+          "H01",
+          "H05"
+        ],
+        "information_sufficiency": "insufficient",
+        "error": null
+      },
+      {
+        "id": "FX-38",
+        "expected_route": "emergency_guidance",
+        "expected_primary_rule": "E02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "emergency_guidance",
+        "actual_primary_rule": "E02",
+        "local_signal": "current_explicit_demo_warning",
+        "matched_rules": [
+          "E02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-39",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-40",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-41",
+        "expected_route": "routine_appointment",
+        "expected_primary_rule": "R01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H05",
+        "local_signal": "none",
+        "matched_rules": [
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-42",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H02",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H02",
+        "local_signal": "none",
+        "matched_rules": [
+          "H02",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-43",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H03",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H03",
+        "local_signal": "none",
+        "matched_rules": [
+          "H03",
+          "H05"
+        ],
+        "information_sufficiency": "unclear",
+        "error": null
+      },
+      {
+        "id": "FX-44",
+        "expected_route": "same_day_human_review",
+        "expected_primary_rule": "H01",
+        "reference_comparison_included": true,
+        "exclusion_reason": null,
+        "save_state": "succeeded",
+        "actual_route": "same_day_human_review",
+        "actual_primary_rule": "H01",
+        "local_signal": "none",
+        "matched_rules": [
+          "H01",
+          "H05"
+        ],
+        "information_sufficiency": "insufficient",
+        "error": null
+      }
+    ]
+  },
+  "replay": [
+    {
+      "mode": "replay",
+      "variant": "direct_replay",
+      "evidence_kind": "AUTHORED_STUB_RULE_CONFORMANCE_NOT_MODEL_PERFORMANCE",
+      "executed_cases": 5,
+      "conformance_passed": 5,
+      "conformance_failed": 0,
+      "metrics_interpretation": "These counts only describe rule behavior on authored stubs. They are not Jev accuracy, calibration, latency or a fair cross-arm ranking.",
+      "metrics": {
+        "reference_scored_cases": 5,
+        "reference_excluded_cases": [],
+        "emergency_route_miss_rate": {
+          "numerator": 0,
+          "denominator": 2,
+          "rate": 0.0
+        },
+        "emergency_route_miss_cases": [],
+        "incorrect_routine_per_reference_nonroutine": {
+          "numerator": 0,
+          "denominator": 5,
+          "rate": 0.0
+        },
+        "incorrect_routine_per_routine_suggestion": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "incorrect_routine_cases": [],
+        "unnecessary_escalation_per_reference_routine": {
+          "numerator": 0,
+          "denominator": 0,
+          "rate": null
+        },
+        "unnecessary_escalation_cases": [],
+        "observed_route_counts": {
+          "same_day_human_review": 3,
+          "emergency_guidance": 2
+        },
+        "execution_failures": {
+          "count": 0,
+          "case_ids": []
+        },
+        "same_day_review_suggestions": 3,
+        "nonemergency_saved_requests_requiring_staff_review": 3,
+        "reviewer_minutes": null,
+        "emergency_guidance_ui_latency_ms": null,
+        "calibration": null,
+        "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
+      },
+      "cases": [
+        {
+          "id": "FX-22",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H05",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": "defer",
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H05",
+          "matched_rules": [
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-23",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H05",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": "same_day_human_review",
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H05",
+          "matched_rules": [
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-36",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": "routine_appointment",
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-37",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": "routine_appointment",
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-38",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "known_gap_model_dependent",
+          "raw_authored_direct_choice": "emergency_guidance",
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        }
+      ]
+    },
+    {
+      "mode": "replay",
+      "variant": "decomposed_replay",
+      "evidence_kind": "AUTHORED_STUB_RULE_CONFORMANCE_NOT_MODEL_PERFORMANCE",
+      "executed_cases": 38,
+      "conformance_passed": 38,
+      "conformance_failed": 0,
+      "metrics_interpretation": "These counts only describe rule behavior on authored stubs. They are not Jev accuracy, calibration, latency or a fair cross-arm ranking.",
+      "metrics": {
+        "reference_scored_cases": 38,
+        "reference_excluded_cases": [],
+        "emergency_route_miss_rate": {
+          "numerator": 0,
+          "denominator": 11,
+          "rate": 0.0
+        },
+        "emergency_route_miss_cases": [],
+        "incorrect_routine_per_reference_nonroutine": {
+          "numerator": 0,
+          "denominator": 32,
+          "rate": 0.0
+        },
+        "incorrect_routine_per_routine_suggestion": {
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0.0
+        },
+        "incorrect_routine_cases": [],
+        "unnecessary_escalation_per_reference_routine": {
+          "numerator": 0,
+          "denominator": 6,
+          "rate": 0.0
+        },
+        "unnecessary_escalation_cases": [],
+        "observed_route_counts": {
+          "routine_appointment": 6,
+          "same_day_human_review": 21,
+          "emergency_guidance": 11
+        },
+        "execution_failures": {
+          "count": 0,
+          "case_ids": []
+        },
+        "same_day_review_suggestions": 21,
+        "nonemergency_saved_requests_requiring_staff_review": 27,
+        "reviewer_minutes": null,
+        "emergency_guidance_ui_latency_ms": null,
+        "calibration": null,
+        "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
+      },
+      "cases": [
+        {
+          "id": "FX-01",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-02",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H02",
+          "matched_rules": [
+            "H02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-03",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "not_attempted",
+          "authored_model_status": "not_called",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01",
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-04",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "not_attempted",
+          "authored_model_status": "not_called",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01",
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-05",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-06",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02",
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-07",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02",
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-08",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "known_gap_model_dependent",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-09",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "known_gap_model_dependent",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02",
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-10",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-11",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-12",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-13",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H02",
+          "matched_rules": [
+            "H02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-14",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03",
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-15",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-16",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-17",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-18",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01",
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-19",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H04",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "timeout",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H04",
+          "matched_rules": [
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-20",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H04",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "malformed",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H04",
+          "matched_rules": [
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-21",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H04",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "error",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H04",
+          "matched_rules": [
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-24",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H05",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H05",
+          "matched_rules": [
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-25",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-26",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-27",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02",
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-28",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03",
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-29",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "timeout",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E02",
+          "matched_rules": [
+            "E02",
+            "H04"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-30",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "failed",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-32",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H02",
+          "matched_rules": [
+            "H02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-33",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H02",
+          "matched_rules": [
+            "H02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-34",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-35",
+          "expected_route": "emergency_guidance",
+          "expected_primary_rule": "E01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "independent_trigger_required",
+          "raw_authored_direct_choice": null,
+          "actual_route": "emergency_guidance",
+          "actual_primary_rule": "E01",
+          "matched_rules": [
+            "E01",
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-39",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03",
+            "H05"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-40",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-41",
+          "expected_route": "routine_appointment",
+          "expected_primary_rule": "R01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "routine_appointment",
+          "actual_primary_rule": "R01",
+          "matched_rules": [
+            "R01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-42",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H02",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H02",
+          "matched_rules": [
+            "H02"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-43",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H03",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H03",
+          "matched_rules": [
+            "H03"
+          ],
+          "conformance_pass": true,
+          "error": null
+        },
+        {
+          "id": "FX-44",
+          "expected_route": "same_day_human_review",
+          "expected_primary_rule": "H01",
+          "reference_comparison_included": true,
+          "exclusion_reason": null,
+          "save_state": "succeeded",
+          "authored_model_status": "valid",
+          "original_timing_requirement": "not_applicable",
+          "raw_authored_direct_choice": null,
+          "actual_route": "same_day_human_review",
+          "actual_primary_rule": "H01",
+          "matched_rules": [
+            "H01"
+          ],
+          "conformance_pass": true,
+          "error": null
+        }
+      ]
+    }
+  ],
+  "local_guard": {
+    "executed_cases": 7,
+    "passed": 7,
+    "failed": 0,
+    "cases": [
+      {
+        "id": "FX-06",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": false
+      },
+      {
+        "id": "FX-07",
+        "local_signal": "current_possible_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": false
+      },
+      {
+        "id": "FX-08",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": true
+      },
+      {
+        "id": "FX-09",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": true
+      },
+      {
+        "id": "FX-27",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": false
+      },
+      {
+        "id": "FX-29",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": false
+      },
+      {
+        "id": "FX-38",
+        "local_signal": "current_explicit_demo_warning",
+        "route": "emergency_guidance",
+        "pass": true,
+        "previous_model_dependency_gap": true
+      }
+    ],
+    "claim_limit": "Checks bounded Python text recognition before any model call. Browser event order and offline display need separate UI tests. No universal emergency-text detection claim."
+  },
+  "unrun_arms": [
+    "live_direct_jev",
+    "live_decomposed_jev",
+    "live_structured_output_llm"
+  ]
+}
