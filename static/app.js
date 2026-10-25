@@ -112,7 +112,7 @@ function collectInputs() {
 function updateModeNote() {
   const mode = $("assessment-mode").value;
   const notes = {
-    local_ai:["Live local AI","Reads your description on this computer, checks six routing criteria and selects source excerpts for staff. Every suggestion still needs human review."],
+    local_ai:["Processed on this computer","AI reads each request and prepares source excerpts for staff review."],
     no_ai:["No AI","Immediate checks can show emergency guidance. Every other request goes to human review because no semantic AI has assessed the description."],
     replay:["Replay — not live AI",state.fixtureDirty ? "This scenario has changed. Reload it for an exact saved replay, or choose structured rules." : "Uses the selected scenario’s authored assessment. It is not a fresh Jev or LLM prediction. Infrastructure failures in the fixture are tested separately, not automatically simulated here."],
     jev_direct:["Live Jev · direct decision","Requests a bounded route or explicit defer. Hard guards and staff review still apply."],
@@ -133,6 +133,8 @@ function resetRequest(clearFixture=true) {
   state.submitting = false;
   clearTimeout(state.pollTimer);
   $("intake-form").reset();
+  $("intake-form").hidden = false;
+  $("new-request").textContent = "Clear form";
   for (const button of document.querySelectorAll("[data-scenario]")) button.classList.remove("selected");
   $("preferred-times").disabled = false;
   $("receipt-panel").hidden = true;
@@ -146,9 +148,10 @@ function resetRequest(clearFixture=true) {
   if (clearFixture) { state.fixture = null; $("fixture-select").value = ""; $("fixture-note").textContent = "44 invented cases to explore."; }
   $("character-count").textContent = "0 / 4,000";
   $("submit-request").disabled = false;
-  $("submit-request").textContent = "Analyze request";
+  $("submit-request").textContent = "Review with AI";
   state.aiStartedAt = null;
   updateModeNote();
+  updateProgress();
 }
 function loadFixture() {
   const fixture = state.fixtures.find(c=>c.id === $("fixture-select").value);
@@ -179,6 +182,7 @@ function loadFixture() {
   state.loadingFixture = false;
   checkEmergency();
   updateModeNote();
+  updateProgress();
 }
 $("fixture-select").addEventListener("change",loadFixture);
 for (const button of document.querySelectorAll("[data-scenario]")) button.addEventListener("click",()=> {
@@ -202,6 +206,7 @@ $("intake-form").addEventListener("input",(event)=> {
   $("character-count").textContent = `${$("symptom-text").value.length.toLocaleString()} / 4,000`;
   checkEmergency();
   updateModeNote();
+  updateProgress();
 });
 $("intake-form").addEventListener("change",checkEmergency);
 function formError(message) {
@@ -251,6 +256,7 @@ $("intake-form").addEventListener("submit",async (event)=> {
   }
 });
 function modeDescription(request) {
+  if (request.ai?.status === "partial") return "Partial local AI assessment; warning retained";
   if (request.mode === "replay") return "Replay — authored synthetic assessment, not a live inference";
   if (request.mode === "degraded") return "Degraded — automated assessment unavailable or unusable";
   if (request.mode === "live_model" && request.variant === "local_ai") return `Live local AI — ${request.ai?.model || "Ollama"}`;
@@ -270,6 +276,8 @@ function renderReceipt(request) {
   else if (request.emergency_guidance_ever) showEmergency("Emergency guidance was shown earlier for this request. Its history is preserved; a later staff decision does not retract the immediate guidance already given.","recorded_history",{request_id:request.id});
   const panel = $("receipt-panel");
   panel.hidden = false;
+  $("intake-form").hidden = true;
+  $("new-request").textContent = "New request";
   panel.innerHTML = `<p class="eyebrow">Saved in the local demonstration</p><h2>${booked ? "Synthetic appointment booked" : "Your request was received"}</h2><p class="receipt-id">Request ${escapeHTML(request.id)}</p><div class="status-grid"><div class="status-item"><small>Request</small><strong>Received</strong></div><div class="status-item"><small>Assessment</small><strong>${escapeHTML(readable(request.assessment_state || request.assessment_status))}</strong></div><div class="status-item"><small>Human review</small><strong>${escapeHTML(readable(review))}</strong></div><div class="status-item"><small>Appointment</small><strong>${booked ? escapeHTML(formatTime(request.booking.slot)) : "Not booked"}</strong></div></div>${aiResultHTML(request)}<div class="suggestion ${routeClass(route)}"><h3>${escapeHTML(routeLabel(route))}</h3>${explanationHTML(request.decision)}</div><p class="small-note"><strong>Information sufficiency:</strong> ${escapeHTML(readable(request.decision?.information_sufficiency || "pending"))}. This is separate from urgency.</p><p class="small-note"><strong>Mode:</strong> ${escapeHTML(modeDescription(request))}</p>${request.coverage?.available === false ? '<div class="message error-message"><strong>Clinic review is unavailable now.</strong> No alternate care contact is configured in this synthetic demo. Do not wait for this form if this may be an emergency.</div>' : '<p class="small-note">Queue coverage is simulated. This demonstration does not provide a real review service.</p>'}<p class="small-note"><strong>No messages were sent.</strong> Notifications are simulated; no clinic or emergency service was contacted.</p><p class="small-note">An administrative suggestion is not a diagnosis or an assurance of safety. ${booked ? "This booking is synthetic only." : "Staff review and a separate booking are still required."}</p><div class="receipt-actions"><button id="review-receipt" type="button" class="button primary">Continue to staff review</button><button id="refresh-receipt" type="button" class="button secondary">Refresh request status</button></div>`;
   $("refresh-receipt").addEventListener("click",pollReceipt);
   $("review-receipt").addEventListener("click",()=>showView("staff"));
@@ -461,8 +469,11 @@ async function initialize() {
     }
     for (const item of state.config.emergency_questions || []) if (warningText[item.id]) warningText[item.id] = item.text;
     if (state.config.default_variant && !state.submission) $("assessment-mode").value = state.config.default_variant;
-    document.querySelector(".policy-tag strong").textContent = state.config.policy_version || "demo-policy-0.3";
-    document.querySelector("footer>span:last-child").textContent = state.config.policy_version || "demo-policy-0.3";
+    document.querySelector(".policy-tag strong").textContent = state.config.policy_version || "Policy unavailable";
+    document.querySelector("footer>span:last-child").textContent = state.config.policy_version || "Policy unavailable";
+  } else {
+    document.querySelector(".policy-tag strong").textContent = "Policy unavailable";
+    document.querySelector("footer>span:last-child").textContent = "Policy unavailable";
   }
   if (results[1].status === "fulfilled") {
     state.fixtures = results[1].value.cases || results[1].value.fixtures || [];
@@ -470,6 +481,7 @@ async function initialize() {
   } else $("fixture-note").textContent = "Synthetic scenarios could not be loaded. The emergency notice and immediate checks remain available.";
   updateModeNote();
   refreshAIStatus();
+  updateProgress();
 }
 initialize();
 if (window.location.pathname === "/staff") showView("staff");
@@ -485,7 +497,7 @@ async function refreshAIStatus() {
     $("ai-status").textContent = status.available ? "Connected" : status.status === "model_missing" ? "Model needed" : "Offline";
     $("ai-status").className = `model-status ${status.available ? "ready" : "offline"}`;
     $("ai-model").textContent = status.model || "Local language model";
-    $("ai-status-message").textContent = status.available ? "Ready to read your next request. Processing stays on this computer." : status.message || "Start the local model, then check again. Requests can still go to staff review.";
+    $("ai-status-message").textContent = status.available ? "Ready for a fresh assessment. No cloud connection needed." : status.message || "Start the local model, then check again. Requests can still go to staff review.";
   } catch {
     $("ai-status").textContent = "Unavailable";
     $("ai-status").className = "model-status offline";
@@ -498,6 +510,12 @@ async function refreshAIStatus() {
 }
 $("refresh-ai").addEventListener("click", refreshAIStatus);
 
+function sourceExcerptsHTML(evidence) {
+  if (!evidence.length) return "";
+  const label = field => field === "onset" ? "When it started" : field === "onset_currentness" ? "Happening now" : !field || field === "symptom_text" ? "Description" : "Request field";
+  return `<details class="evidence-details"><summary>Source excerpts (${evidence.length})</summary>${evidence.map(e=>`<blockquote><span class="evidence-source">${escapeHTML(label(e.field))}</span>${escapeHTML(e.quote)}</blockquote>`).join("")}</details>`;
+}
+
 function aiResultHTML(request, staff=false) {
   if (request.variant !== "local_ai") return "";
   const ai = request.ai || {};
@@ -506,11 +524,45 @@ function aiResultHTML(request, staff=false) {
     const elapsed = state.aiStartedAt ? Math.floor((Date.now() - state.aiStartedAt) / 1000) : 0;
     return `<section class="ai-result pending" aria-label="AI assessment progress"><div class="ai-result-heading"><span class="activity-ring" aria-hidden="true"></span><h3>Local AI is reading the request</h3></div><p>Checking meaning, context and missing details. ${elapsed > 4 ? `${elapsed} seconds elapsed. ` : ""}The first request may take longer while the model loads.</p><div class="processing-steps"><span>Request saved</span><span class="active">AI assessment</span><span>Staff review</span></div><small>Emergency guidance does not wait for the model.</small></section>`;
   }
+  if (ai.status === "partial") return `<section class="ai-result partial" role="note"><div class="ai-result-heading"><span aria-hidden="true">!</span><h3>Assessment incomplete</h3></div><p>A possible current warning was identified, but the full assessment could not finish. Follow the emergency guidance shown below; do not wait for staff review.</p><small>The warning is retained. This is not a completed AI assessment.</small></section>`;
   if (ai.status !== "valid") return `<section class="ai-result unavailable"><div class="ai-result-heading"><span aria-hidden="true">!</span><h3>Staff review will take it from here</h3></div><p>${escapeHTML(ai.error || "A valid local AI assessment was not available. Your saved request can still be reviewed by staff.")}</p><small>No AI result has been substituted.</small></section>`;
   const metrics = [ai.model || "Ollama", Number.isFinite(ai.latency_ms) ? `${(ai.latency_ms/1000).toFixed(1)} s` : null, Number.isFinite(ai.completion_tokens) ? `${ai.completion_tokens} output tokens` : null].filter(Boolean);
   const evidence = Array.isArray(ai.evidence) ? ai.evidence : [];
   const fields = request.assessment?.assessment;
   const labels = {warning:"Current warning",intent:"Request intent",information_sufficiency:"Information",contradiction:"Conflicting details",scope:"Demo scope",human_review_indication:"Additional review"};
   const valueLabel = v => v === true ? "Yes" : v === false ? "No" : readable(v);
-  return `<section class="ai-result"><div class="ai-result-heading"><span class="ai-icon" aria-hidden="true">✳</span><h3>AI handoff</h3><span class="live-badge">Live inference</span></div><p class="ai-summary">${escapeHTML(ai.summary || "The model assessed the request. Review the original description alongside the routing suggestion.")}</p>${evidence.length ? `<details class="evidence-details"><summary>Source excerpts (${evidence.length})</summary>${evidence.map(e=>`<blockquote>${escapeHTML(e.quote)}</blockquote>`).join("")}</details>` : ""}${staff && fields ? `<dl class="ai-fields">${Object.entries(labels).map(([key,label])=>`<div><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(valueLabel(fields[key]))}</dd></div>`).join("")}</dl>` : ""}<div class="ai-metrics">${metrics.map(m=>`<span>${escapeHTML(m)}</span>`).join("")}</div><small>AI-selected excerpts from the request. Staff verify the context.</small></section>`;
+  return `<section class="ai-result"><div class="ai-result-heading"><span class="ai-icon" aria-hidden="true">✳</span><h3>AI handoff</h3><span class="live-badge">Live inference</span></div><p class="ai-summary">${escapeHTML(ai.summary || "The model assessed the request. Review the original description alongside the routing suggestion.")}</p>${sourceExcerptsHTML(evidence)}${staff && fields ? `<dl class="ai-fields">${Object.entries(labels).map(([key,label])=>`<div><dt>${escapeHTML(label)}</dt><dd>${escapeHTML(valueLabel(fields[key]))}</dd></div>`).join("")}</dl>` : ""}<div class="ai-metrics">${metrics.map(m=>`<span>${escapeHTML(m)}</span>`).join("")}</div><small>AI-selected excerpts from the request. Staff verify the context.</small></section>`;
 }
+
+
+function updateProgress() {
+  const inputs = collectInputs();
+  const answered = Object.values(inputs.emergency_answers || {}).filter(x=>["yes","no","unsure"].includes(x)).length;
+  const ready = {
+    request: !!(inputs.symptom_text?.trim() && inputs.self_reported_urgency && inputs.onset_currentness),
+    safety: answered === 6,
+    details: inputs.age_years !== null && !!inputs.language && !!inputs.requester && inputs.pregnancy_postpartum !== null && (inputs.no_time_preference || inputs.preferred_times.length > 0),
+  };
+  let count = Object.values(ready).filter(Boolean).length;
+  $("completion-count").textContent = `${count} of 3`;
+  $("completion-fill").style.transform = `scaleX(${count/3})`;
+  $("progress-request").textContent = ready.request ? "Description added" : "Waiting for details";
+  $("progress-safety").textContent = ready.safety ? "All questions answered" : `${6-answered} question${6-answered === 1 ? "" : "s"} to answer`;
+  $("progress-details").textContent = ready.details ? "Details added" : "Context and preferences";
+  for (const [key,complete] of Object.entries(ready)) document.querySelector(`[data-progress="${key}"]`).classList.toggle("complete",complete);
+  $("progress-note").textContent = count === 3 ? "Your details are ready for review. You can still edit any answer." : "Complete what you can. Missing details will be flagged for staff.";
+}
+for (const link of document.querySelectorAll("[data-progress]")) link.addEventListener("click",event=> {
+  if ($("intake-form").hidden) { event.preventDefault(); $("receipt-panel").focus(); }
+});
+
+
+// The same live connection status moves above the form on smaller screens.
+const compactConnection = window.matchMedia("(max-width: 1000px)");
+function placeConnectionStatus() {
+  const panel = document.querySelector(".model-panel");
+  if (compactConnection.matches) $("mobile-model-slot").append(panel);
+  else document.querySelector(".demo-sidebar").insertBefore(panel,document.querySelector(".next-step-note"));
+}
+compactConnection.addEventListener("change",placeConnectionStatus);
+placeConnectionStatus();
