@@ -17,7 +17,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, unquote, urlsplit
 
 from .storage import Store, StoreError
-from . import policy, assessors, config
+from . import policy, assessors, config, reports
 
 ROOT = Path(__file__).resolve().parents[1]
 VARIANTS = {"local_ai", "no_ai", "replay", "jev_direct", "jev_decomposed", "llm"}
@@ -243,15 +243,15 @@ class Handler(BaseHTTPRequestHandler):
             raise StoreError(401, "Staff sign-in required")
         return user
 
-    def read_json(self):
+    def read_json(self, maximum=65536):
         if self.headers.get_content_type() != "application/json":
             raise StoreError(415, "Use application/json")
         try:
             length = int(self.headers.get("Content-Length", "0"))
         except ValueError:
             raise StoreError(400, "Invalid content length")
-        if length <= 0 or length > 65536:
-            raise StoreError(413, "JSON request must be between 1 and 65536 bytes")
+        if length <= 0 or length > maximum:
+            raise StoreError(413, f"JSON request must be between 1 and {maximum} bytes")
         try:
             body = self.rfile.read(length)
             self._body_consumed = True
@@ -304,7 +304,7 @@ class Handler(BaseHTTPRequestHandler):
             if method == "GET":
                 self.get(path, parse_qs(url.query))
             else:
-                self.post(path, self.read_json())
+                self.post(path, self.read_json(reports.MAX_BODY_BYTES if path == '/api/reports/extract' else 65536))
         except StoreError as error:
             self.error_response(error.status, error.message)
         except sqlite3.Error:
@@ -315,6 +315,8 @@ class Handler(BaseHTTPRequestHandler):
             self.error_response(500, "The request could not be completed. No successful save or notification is implied.")
 
     def get(self, path, query):
+        if path == '/api/reports/status':
+            return self.json_response(200, reports.status())
         if path == "/api/health":
             with self.server.store.connect() as db:
                 db.execute("SELECT 1").fetchone()
@@ -347,6 +349,10 @@ class Handler(BaseHTTPRequestHandler):
         self.static(path)
 
     def post(self, path, payload):
+        if path == '/api/reports/extract':
+            result = reports.extract(payload)
+            token = self.server.store.save_report(result)
+            return self.json_response(200, {'report_id': token, 'report': result})
         if path == "/api/login":
             username, password = payload.get("username"), payload.get("password")
             entry = USERS.get(username) if isinstance(username, str) else None
@@ -360,6 +366,10 @@ class Handler(BaseHTTPRequestHandler):
             return self.json_response(200, {"user": None}, "clinic_session=; HttpOnly; SameSite=Strict; Path=/; Max-Age=0")
         if path == "/api/requests":
             cleaned = validate_submission(payload)
+            if payload.get('report_id') is not None:
+                if payload.get('report_reviewed') is not True:
+                    raise StoreError(422, 'Review the report extraction before attaching it to an intake request.')
+                cleaned['report_extraction'] = self.server.store.get_report(payload['report_id'])
             key = self.headers.get("Idempotency-Key")
             if not key or len(key) > 200:
                 raise StoreError(422, "An Idempotency-Key header is required")
@@ -391,7 +401,7 @@ class Handler(BaseHTTPRequestHandler):
         name = "index.html" if path in {"/", "/intake", "/staff"} else unquote(path).lstrip("/")
         base = (ROOT / "static").resolve()
         target = (base / name).resolve()
-        if base not in target.parents or not target.is_file() or target.suffix not in {".html", ".js", ".css", ".svg", ".png", ".ico"}:
+        if base not in target.parents or not target.is_file() or target.suffix not in {".html", ".js", ".css", ".svg", ".png", ".ico", ".pdf", ".txt"}:
             raise StoreError(404, "Page not found")
         body = target.read_bytes()
         self.send_response(200)

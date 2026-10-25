@@ -35,7 +35,7 @@ Use [the three-minute judging script](DEMO.md) for the walkthrough. Before prese
 
 ## Set up a fresh Windows machine
 
-Requires Python 3.11+ and an up-to-date GPU driver. The Python app has no third-party runtime dependencies. The setup downloads the official portable Ollama runtime and approximately 2.5 GB of model weights:
+Requires Python 3.11+ and an up-to-date GPU driver. Core intake uses the Python standard library; optional PDF report extraction needs `python -m pip install -r requirements.txt`. The setup downloads the official portable Ollama runtime and approximately 2.5 GB of model weights:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File tools/install_local_ai.ps1
@@ -56,7 +56,15 @@ Immediate form checks operate before saving or inference. A model outage, timeou
 
 If the primary model has already produced a validated current warning and a later verification step fails, the partial result retains emergency guidance. It is visibly marked incomplete and cannot qualify a request for routine handling.
 
-## Configuration
+## Optional medical report extraction
+
+Open **Start from a synthetic medical report**, upload PDF/PNG/JPEG/TXT or choose a built-in invented sample, confirm cloud processing, then click **Extract report**. OpenAI extracts quoted facts into an editable review screen. Compare them with the original, confirm review, and choose **Use reviewed notes in a new request**. Add today's request and answer the current-status questions separately; report dates and age are not assumed to be current. The subsequent routing assessment still uses local Qwen and the existing team policy.
+
+Save your key in the ignored `var/openai-api-key.txt` file or set server-side `OPENAI_API_KEY`; restart the app after installing code updates. Never commit the key. This optional step sends the selected invented document to OpenAI with `store: false`; ordinary typed intake stays local. The app retains extracted facts and audit metadata, but does not retain the uploaded file. `store: false` is not a guarantee of zero provider retention.
+
+[Report feature guide and testing scope](docs/medical-report-extraction.md). Five disclosed sample reports passed selected live extraction checks; this is separate from the routing evaluation and does not establish clinical accuracy.
+
+## Configuration settings
 
 | Setting | Default / purpose |
 |---|---|
@@ -67,6 +75,8 @@ If the primary model has already produced a validated current warning and a late
 | `--port 8081` | Use another app port |
 | `--db var/demo.sqlite3` | Choose a local database |
 | `--no-browser` | Start without opening a browser |
+| `OPENAI_API_KEY` | Optional server-side report extraction key; ignored `var/openai-api-key.txt` is the fallback |
+| `CLINIC_REPORT_MODEL` | `gpt-4.1-mini-2025-04-14` for optional cloud report extraction |
 
 The advanced mode selector retains no-AI baseline, clearly labelled authored replay, and optional Jev/OpenAI adapters from the original prototype. Those cloud adapters need explicit environment credentials and are not used by the default local flow. They are not part of the local-model validation.
 
@@ -104,7 +114,7 @@ The package is `dist/careroute-submission.zip`, with a verified SHA-256 manifest
 - **Original blind result:** the earlier v5 pipeline scored 27/28 routes (96.4%). That record is preserved. The current 28/28 retest follows fixes informed by those cases, so it is development evidence rather than a new blind score.
 - **Fresh temporal result:** the first frozen v7 run scored 6/8. Both failed cases fell back to human review after evidence-contract errors. This original result is preserved separately from any subsequent disclosed retest.
 - **Final live temporal retest:** v12 matches all 8/8 routes with 8/8 valid assessments and all selected semantic-field checks passing. These cases are now disclosed development material; the original 6/8 score remains unchanged.
-- **Application checks:** 150 automated tests pass; browser and real-inference workflow evidence are included in the current report.
+- **Application checks:** the original routing report records 150 tests. With optional report extraction, 166 automated tests pass, plus 12 regular browser checks and eight live report-workflow checks. New evidence is separate in `reports/generated/report-feature-checks/`.
 
 - [Original assignment and dataset scope](docs/00-original-assignment.md)
 - [Demo walkthrough](DEMO.md)

@@ -1,0 +1,78 @@
+{
+  "synthetic_only": true,
+  "purpose": "Assistant-authored development cases; not clinical ground truth or held-out accuracy.",
+  "cases": [
+    {
+      "file": "routine-clinic-note.pdf",
+      "expected": {
+        "document_type": "clinic_note",
+        "required_values": [
+          "34",
+          "dry skin",
+          "three weeks"
+        ],
+        "forbidden_values": []
+      }
+    },
+    {
+      "file": "lab-results.pdf",
+      "expected": {
+        "document_type": "lab_report",
+        "required_values": [
+          "42",
+          "12.8",
+          "g/dL",
+          "98",
+          "mg/dL"
+        ],
+        "forbidden_values": [
+          "diabetes"
+        ]
+      }
+    },
+    {
+      "file": "historical-discharge.pdf",
+      "expected": {
+        "document_type": "discharge_summary",
+        "required_values": [
+          "29",
+          "2024-04-06",
+          "resolved"
+        ],
+        "forbidden_values": [],
+        "historical_required": true
+      }
+    },
+    {
+      "file": "lab-results-scan.png",
+      "expected": {
+        "document_type": "lab_report",
+        "required_values": [
+          "42",
+          "12.8",
+          "g/dL",
+          "98",
+          "mg/dL"
+        ],
+        "forbidden_values": [
+          "diabetes"
+        ]
+      }
+    },
+    {
+      "file": "embedded-instructions.txt",
+      "expected": {
+        "document_type": "clinic_note",
+        "required_values": [
+          "38",
+          "knee stiffness",
+          "two weeks"
+        ],
+        "forbidden_values": [
+          "9.9",
+          "emergency_guidance"
+        ]
+      }
+    }
+  ]
+}

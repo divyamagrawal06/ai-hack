@@ -7,6 +7,7 @@
   <title>CareRoute — local AI intake</title>
   <link rel="stylesheet" href="/styles.css">
   <script src="/app.js" defer></script>
+  <script src="/reports.js" defer></script>
 </head>
 <body>
 <a class="skip-link" href="#main">Skip to content</a>
@@ -31,6 +32,28 @@
       <section id="immediate-guidance" class="emergency-alert" role="alert" aria-live="assertive" tabindex="-1" hidden>
         <p class="eyebrow">Do not wait for a response</p><h2>Contact your local emergency services now.</h2><p>Do not wait for this form, an automated assessment, or a clinic reply. This service does not contact emergency services for you.</p><p id="immediate-reason" class="alert-reason"></p><p class="fine-print">This notice stays visible for this request, even if you change an answer.</p>
       </section>
+      <details id="report-import" class="report-import">
+        <summary>Start from a synthetic medical report <span class="badge">Optional · OpenAI</span></summary>
+        <div class="report-import-body">
+          <p>Extract documented facts from a PDF, scan or text file, then review them before adding notes to intake. A report does not establish what is happening now.</p>
+          <p id="report-status" class="field-help" role="status">Checking report extraction…</p>
+          <div class="field-grid"><div><label for="report-file">Upload an invented report</label><input id="report-file" type="file" accept=".pdf,.png,.jpg,.jpeg,.txt"><p class="field-help">Up to 4 MiB; PDFs up to 8 pages.</p></div><div><label for="report-sample">Or try a synthetic sample</label><select id="report-sample"><option value="">Choose a sample</option><option value="routine-clinic-note.pdf">Routine clinic note · PDF</option><option value="lab-results.pdf">Laboratory results · PDF</option><option value="historical-discharge.pdf">Historical discharge note · PDF</option><option value="lab-results-scan.png">Scanned laboratory report · PNG</option><option value="embedded-instructions.txt">Untrusted instructions · TXT</option></select></div></div>
+          <p id="report-file-note" class="field-help">No report selected.</p><a id="report-original" target="_blank" rel="noopener" hidden>Open selected original</a>
+          <label class="checkbox-label"><input id="report-consent" type="checkbox"> This report is invented. Send it to OpenAI for extraction.</label>
+          <p class="field-help">Report extraction uses a cloud API. The routing model remains local. Do not upload real patient records.</p>
+          <button id="report-extract" class="button secondary" type="button">Extract report</button><p id="report-message" role="status" aria-live="polite"></p>
+          <section id="report-preview" hidden aria-label="Review extracted report">
+            <h3>Review the extracted facts</h3><p id="report-provenance" class="field-help"></p>
+            <p>Check every value, unit, negation and date against the original. Image-only excerpts are model transcriptions and require visual verification.</p>
+            <div id="report-facts"></div><p id="report-issues" class="field-help"></p>
+            <label for="report-draft">Editable report notes for intake</label><textarea id="report-draft" rows="5" maxlength="4000"></textarea>
+            <label class="checkbox-label"><input id="report-reviewed" type="checkbox"> I compared these notes with the original report.</label>
+            <button id="report-apply" type="button" class="button primary">Use reviewed notes in a new request</button>
+            <p class="field-help">Starts a new form. Current symptoms, urgency, emergency answers and appointment preferences must be entered separately.</p>
+          </section>
+        </div>
+      </details>
+      <p id="report-attached" class="message" hidden></p>
       <form id="intake-form" class="intake-sheet" novalidate>
         <section class="form-section" id="request-section"><div class="section-heading"><span class="step">1</span><div><h2>What brings you in?</h2><p>Tell us what is happening in your own words.</p></div></div>
           <label for="symptom-text">Your description <span class="required">Required</span></label><textarea id="symptom-text" name="symptom_text" rows="4" maxlength="4000" placeholder="For example, I would like a routine visit for dry skin on my hands that has stayed the same for a few weeks." aria-describedby="symptom-help character-count"></textarea><div class="field-help-row"><span id="symptom-help">Your original words are preserved for staff review.</span><span id="character-count">0 / 4,000</span></div>

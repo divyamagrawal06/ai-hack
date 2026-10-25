@@ -65,6 +65,9 @@ class Store:
         with self.connect() as db:
             db.executescript("""
                 PRAGMA journal_mode=WAL;
+                CREATE TABLE IF NOT EXISTS report_extractions (
+                    token_hash TEXT PRIMARY KEY, data TEXT NOT NULL
+                );
                 CREATE TABLE IF NOT EXISTS requests (
                     id TEXT PRIMARY KEY, version INTEGER NOT NULL,
                     input_hash TEXT NOT NULL, receipt_hash TEXT NOT NULL, data TEXT NOT NULL
@@ -127,6 +130,21 @@ class Store:
         db.execute("UPDATE requests SET version=?,input_hash=?,data=? WHERE id=?",
                    (item["version"], item["input_hash"], json.dumps(item, ensure_ascii=False, allow_nan=False), item["id"]))
 
+    def save_report(self, result):
+        token = secrets.token_urlsafe(32)
+        with self.transaction() as db:
+            db.execute('INSERT INTO report_extractions(token_hash,data) VALUES(?,?)', (token_hash(token), json.dumps(result, ensure_ascii=False)))
+        return token
+
+    def get_report(self, token):
+        if not isinstance(token, str) or len(token) != 43:
+            raise StoreError(422, 'Invalid report reference')
+        with self.connect() as db:
+            row = db.execute('SELECT data FROM report_extractions WHERE token_hash=?', (token_hash(token),)).fetchone()
+        if not row:
+            raise StoreError(404, 'Report extraction not found. Upload it again before attaching it.')
+        return json.loads(row['data'])
+
     def create(self, payload, key, initial_decision=None):
         payload_hash = digest(payload)
         with self.transaction() as db:
@@ -158,6 +176,8 @@ class Store:
                 "emergency_guidance_ever": initial_route == "emergency_guidance",
                 "client_events": payload.get("client_events", []), "staff_reviews": [],
             }
+            if payload.get('report_extraction'):
+                item['report_extraction'] = payload['report_extraction']
             db.execute("INSERT INTO requests(id,version,input_hash,receipt_hash,data) VALUES(?,?,?,?,?)",
                        (rid, 1, item["input_hash"], token_hash(receipt), json.dumps(item, ensure_ascii=False)))
             db.execute("INSERT INTO idempotency(key,payload_hash,request_id,receipt_token) VALUES(?,?,?,?)",
@@ -169,6 +189,8 @@ class Store:
             })
             self.event(db, rid, "system", "queue_assigned", {"owner": item["owner"], "due_at": item["due_at"], "coverage": item["coverage"]})
             self.event(db, rid, "system", "notification_simulated", {"delivered": False, "message": "No message was sent to staff or emergency services."})
+            if payload.get('report_extraction'):
+                self.event(db, rid, 'synthetic_requester', 'report_extraction_review_confirmed', payload['report_extraction'])
             if initial_decision:
                 self.event(db, rid, "local_policy", "emergency_guidance", initial_decision)
             return item, receipt, True
