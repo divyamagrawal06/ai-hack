@@ -1,0 +1,87 @@
+{
+  "timestamp": "2026-10-25T06:01:48.708950+00:00",
+  "scope": "Local synthetic browser integration; not clinical or live-model validation",
+  "browser": "Chromium via Playwright",
+  "checks": [
+    {
+      "name": "Emergency notice available with JavaScript disabled",
+      "status": "passed",
+      "duration_seconds": 0.545
+    },
+    {
+      "name": "Client/server text-guard parity across 44 invented descriptions",
+      "status": "passed",
+      "duration_seconds": 0.223
+    },
+    {
+      "name": "All 12 Yes/Unsure structured signals show guidance synchronously offline before submit",
+      "status": "passed",
+      "duration_seconds": 0.651
+    },
+    {
+      "name": "Three previous model-dependent examples now trigger bounded local guidance offline",
+      "status": "passed",
+      "duration_seconds": 0.169
+    },
+    {
+      "name": "Negated/history examples and current warning after historical clause",
+      "status": "passed",
+      "duration_seconds": 0.013
+    },
+    {
+      "name": "Actual persisted replay receipt, route, mode and unbooked status",
+      "status": "passed",
+      "duration_seconds": 0.14
+    },
+    {
+      "name": "Edited text cannot masquerade as an unchanged assessment replay",
+      "status": "passed",
+      "duration_seconds": 0.106
+    },
+    {
+      "name": "Staff login, human review, booking and actual audit trail",
+      "status": "passed",
+      "duration_seconds": 0.782
+    },
+    {
+      "name": "Real failed-persistence response never shows receipt and keeps emergency guidance",
+      "status": "passed",
+      "duration_seconds": 0.987
+    },
+    {
+      "name": "390px mobile layout has no horizontal overflow and retains emergency notice",
+      "status": "passed",
+      "duration_seconds": 0.497
+    },
+    {
+      "name": "Basic label, alert and keyboard skip-link semantics (not a screen-reader audit)",
+      "status": "passed",
+      "duration_seconds": 0.452
+    },
+    {
+      "name": "No uncaught browser JavaScript errors",
+      "status": "passed",
+      "duration_seconds": 0.0
+    }
+  ],
+  "passed": 12,
+  "failed": 0,
+  "synchronous_emergency_handler_ms": [
+    18.099999994039536,
+    1.1999999955296516,
+    1,
+    1,
+    1.2000000029802322,
+    1.1999999955296516,
+    1,
+    1.1000000014901161,
+    1,
+    1,
+    1.1000000014901161,
+    0.8999999985098839,
+    1.5,
+    2,
+    1.5999999940395355
+  ],
+  "timing_limitations": "In-process input-event to DOM-state measurement, not human comprehension or universal detection. No clinical latency target established."
+}

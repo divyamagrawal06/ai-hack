@@ -1,0 +1,5 @@
+{
+  "passed": true,
+  "scope": "Captured actual OpenAI browser response replayed for UI only; zero new model calls. Checks built-in sample selection, contradictory date flag, review confirmation and mobile overflow. Screenshots depict this recorded response.",
+  "checks": 4
+}

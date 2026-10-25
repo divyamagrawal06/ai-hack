@@ -1,0 +1,97 @@
+{
+  "file": "lab-results-scan.png",
+  "expected": {
+    "document_type": "lab_report",
+    "required_values": [
+      "42",
+      "12.8",
+      "g/dL",
+      "98",
+      "mg/dL"
+    ],
+    "forbidden_values": [
+      "diabetes"
+    ]
+  },
+  "result": {
+    "provider": "openai",
+    "local": false,
+    "model": "gpt-4.1-mini-2025-04-14",
+    "prompt_version": "report-extraction-v1",
+    "response_id": "resp_0bdc80f5982cafc5016add9aebfbc087d1a751eece5fc0deac",
+    "filename": "lab-results-scan.png",
+    "file_sha256": "3c059753e3a81ed837e7bc03623241c91051b681aee1ba0dae73db77ecfd5d3c",
+    "created_at": "2026-10-25T06:00:10.453175+00:00",
+    "latency_ms": 2877,
+    "usage": {
+      "input_tokens": 2268,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 222,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 2490
+    },
+    "review_required": true,
+    "extraction": {
+      "document_type": "lab_report",
+      "facts": [
+        {
+          "field": "report_date",
+          "value": "2026-10-02",
+          "quote": "Report date: 2026-10-02",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "visual_review_required"
+        },
+        {
+          "field": "age_at_report",
+          "value": "42 years",
+          "quote": "Age at report: 42 years.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "visual_review_required"
+        },
+        {
+          "field": "test_results",
+          "value": "Hemoglobin: 12.8 g/dL",
+          "quote": "Hemoglobin: 12.8 g/dL. Laboratory reference interval: 12.0-16.0 g/dL.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "visual_review_required"
+        },
+        {
+          "field": "test_results",
+          "value": "Fasting glucose: 98 mg/dL",
+          "quote": "Fasting glucose: 98 mg/dL. Laboratory reference interval: 70-99 mg/dL.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "visual_review_required"
+        },
+        {
+          "field": "symptoms",
+          "value": "not documented",
+          "quote": "Current symptoms and appointment preferences: not documented.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "visual_review_required"
+        }
+      ],
+      "issues": []
+    }
+  },
+  "checks": {
+    "document_type": true,
+    "contains_42": true,
+    "contains_12.8": true,
+    "contains_g/dL": true,
+    "contains_98": true,
+    "contains_mg/dL": true,
+    "excludes_diabetes": true,
+    "source_handling": true
+  },
+  "passed": true
+}

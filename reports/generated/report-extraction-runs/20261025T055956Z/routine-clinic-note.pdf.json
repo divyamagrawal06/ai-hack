@@ -1,0 +1,116 @@
+{
+  "file": "routine-clinic-note.pdf",
+  "expected": {
+    "document_type": "clinic_note",
+    "required_values": [
+      "34",
+      "dry skin",
+      "three weeks"
+    ],
+    "forbidden_values": []
+  },
+  "result": {
+    "provider": "openai",
+    "local": false,
+    "model": "gpt-4.1-mini-2025-04-14",
+    "prompt_version": "report-extraction-v1",
+    "response_id": "resp_0a63a36d643c85c7016add9ae2c24887d1803d2d2782ee3d29",
+    "filename": "routine-clinic-note.pdf",
+    "file_sha256": "f298000cc65588bcbc6a63e8a66e0bf0ef954eba11673fabf77582d6a3fe00dd",
+    "created_at": "2026-10-25T06:00:01.364352+00:00",
+    "latency_ms": 3929,
+    "usage": {
+      "input_tokens": 581,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 296,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 877
+    },
+    "review_required": true,
+    "extraction": {
+      "document_type": "clinic_note",
+      "facts": [
+        {
+          "field": "report_date",
+          "value": "2026-10-01",
+          "quote": "Report date: 2026-10-01",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "age_at_report",
+          "value": "34 years",
+          "quote": "Age at report: 34 years.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "symptoms",
+          "value": "mild dry skin on both hands",
+          "quote": "mild dry skin on both hands had been unchanged for three weeks.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "onset",
+          "value": "three weeks before report date",
+          "quote": "mild dry skin on both hands had been unchanged for three weeks.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "symptoms",
+          "value": "No fever or breathing difficulty",
+          "quote": "No fever or breathing difficulty was reported at that visit.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "medications",
+          "value": "fragrance-free moisturizer",
+          "quote": "Medication recorded: fragrance-free moisturizer.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "allergies",
+          "value": "No known drug allergies",
+          "quote": "No known drug allergies were documented.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "follow_up",
+          "value": "routine clinic appointment",
+          "quote": "Follow-up requested: routine clinic appointment.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        }
+      ],
+      "issues": [
+        "missing_date"
+      ]
+    }
+  },
+  "checks": {
+    "document_type": true,
+    "contains_34": true,
+    "contains_dry skin": true,
+    "contains_three weeks": true,
+    "source_handling": true
+  },
+  "passed": true
+}

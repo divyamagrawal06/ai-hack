@@ -1,0 +1,103 @@
+{
+  "file": "historical-discharge.pdf",
+  "expected": {
+    "document_type": "discharge_summary",
+    "required_values": [
+      "29",
+      "2024-04-06",
+      "resolved"
+    ],
+    "forbidden_values": [],
+    "historical_required": true
+  },
+  "result": {
+    "provider": "openai",
+    "local": false,
+    "model": "gpt-4.1-mini-2025-04-14",
+    "prompt_version": "report-extraction-v1",
+    "response_id": "resp_0938df88c1c608a5016add9ae92d3487d195982363d12e7d31",
+    "filename": "historical-discharge.pdf",
+    "file_sha256": "3c041093ba5bdaf2650a932e7883ccd620c688bc44a0c386569b5998581fa503",
+    "created_at": "2026-10-25T06:00:07.551391+00:00",
+    "latency_ms": 2878,
+    "usage": {
+      "input_tokens": 599,
+      "input_tokens_details": {
+        "cache_write_tokens": 0,
+        "cached_tokens": 0
+      },
+      "output_tokens": 253,
+      "output_tokens_details": {
+        "reasoning_tokens": 0
+      },
+      "total_tokens": 852
+    },
+    "review_required": true,
+    "extraction": {
+      "document_type": "discharge_summary",
+      "facts": [
+        {
+          "field": "report_date",
+          "value": "2024-04-06",
+          "quote": "Report date: 2024-04-06",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "age_at_report",
+          "value": "29 years",
+          "quote": "Age at report: 29 years.",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "symptoms",
+          "value": "brief chest discomfort",
+          "quote": "brief chest discomfort occurred on 2024-04-04 and had resolved before discharge on 2024-04-06",
+          "page": 1,
+          "time_context": "historical",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "onset",
+          "value": "2024-04-04",
+          "quote": "brief chest discomfort occurred on 2024-04-04",
+          "page": 1,
+          "time_context": "historical",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "symptoms",
+          "value": "no chest discomfort or breathing difficulty at discharge",
+          "quote": "no chest discomfort or breathing difficulty at discharge",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        },
+        {
+          "field": "follow_up",
+          "value": "arrange a clinic review after discharge",
+          "quote": "arrange a clinic review after discharge",
+          "page": 1,
+          "time_context": "at_report",
+          "quote_verification": "normalized_text_match"
+        }
+      ],
+      "issues": [
+        "missing_date",
+        "no_clinical_content"
+      ]
+    }
+  },
+  "checks": {
+    "document_type": true,
+    "contains_29": true,
+    "contains_2024-04-06": true,
+    "contains_resolved": true,
+    "preserves_historical_context": true,
+    "source_handling": true
+  },
+  "passed": true
+}
