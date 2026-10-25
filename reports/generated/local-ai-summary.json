@@ -1,9 +1,21 @@
 {
-  "timestamp": "2026-10-24T22:37:36.427253+00:00",
-  "source_run": "reports/live/20261024T223602.269157Z/results.json",
+  "timestamp": "2026-10-25T04:39:14.489042+00:00",
+  "source_run": "reports/live/20261025T042343.632625Z/results.json",
   "model": "qwen3:4b-instruct",
+  "prompt_version": "local-intake-v12",
+  "policy_version": "demo-policy-0.4",
   "attempted": 43,
   "valid_inferences": 43,
+  "full_evaluation_prompt_version": "local-intake-v11",
+  "broad_metrics_scope": "The attempted count, broad route agreement, latency and paired metrics describe full_evaluation_prompt_version; current challenge and temporal results are separate.",
+  "captured_replay": {
+    "replayed_cases": 43,
+    "valid_adapter_results": 43,
+    "comparable_cases": 38,
+    "route_matches": 38,
+    "all_request_payloads_identical": true,
+    "fresh_model_performance_measured": false
+  },
   "runtime": {
     "name": "Ollama",
     "version": "0.40.11",
@@ -24,24 +36,13 @@
     "offload_evidence": "offloaded 37/37 layers to GPU"
   },
   "route_agreement": {
-    "matches": 36,
+    "matches": 38,
     "compared": 38,
-    "mismatches": [
-      {
-        "id": "FX-14",
-        "expected": "same_day_human_review",
-        "actual": "routine_appointment"
-      },
-      {
-        "id": "FX-28",
-        "expected": "same_day_human_review",
-        "actual": "emergency_guidance"
-      }
-    ]
+    "mismatches": []
   },
   "valid_inference_latency_seconds": {
-    "median": 1.5033,
-    "p95": 1.6417
+    "median": 4.0479,
+    "p95": 5.585
   },
   "metrics": {
     "reference_scored_cases": 38,
@@ -74,18 +75,16 @@
     },
     "emergency_route_miss_cases": [],
     "incorrect_routine_per_reference_nonroutine": {
-      "numerator": 1,
+      "numerator": 0,
       "denominator": 32,
-      "rate": 0.03125
+      "rate": 0.0
     },
     "incorrect_routine_per_routine_suggestion": {
-      "numerator": 1,
-      "denominator": 7,
-      "rate": 0.14285714285714285
+      "numerator": 0,
+      "denominator": 6,
+      "rate": 0.0
     },
-    "incorrect_routine_cases": [
-      "FX-14"
-    ],
+    "incorrect_routine_cases": [],
     "unnecessary_escalation_per_reference_routine": {
       "numerator": 0,
       "denominator": 6,
@@ -93,16 +92,16 @@
     },
     "unnecessary_escalation_cases": [],
     "observed_route_counts": {
-      "routine_appointment": 12,
-      "same_day_human_review": 17,
-      "emergency_guidance": 14
+      "routine_appointment": 11,
+      "same_day_human_review": 19,
+      "emergency_guidance": 13
     },
     "execution_failures": {
       "count": 0,
       "case_ids": []
     },
-    "same_day_review_suggestions": 17,
-    "nonemergency_saved_requests_requiring_staff_review": 29,
+    "same_day_review_suggestions": 19,
+    "nonemergency_saved_requests_requiring_staff_review": 30,
     "reviewer_minutes": null,
     "emergency_guidance_ui_latency_ms": null,
     "calibration": null,
@@ -177,15 +176,373 @@
     "calibration": null,
     "scope_note": "Rule outputs against authored synthetic expectations; no clinical gold standard, UI timing or human-workload study."
   },
-  "unit_tests": 134,
+  "unit_tests": 150,
   "unit_failures": 0,
   "browser_checks": 12,
   "browser_failures": 0,
-  "live_browser_checks": 5,
+  "live_browser_checks": 7,
   "semantic_probes": {
     "passed": 8,
     "attempted": 8,
     "failed_case_ids": []
   },
-  "limits": "Visible invented development cases, no clinical ground truth or held-out performance claim."
+  "blind_challenge": {
+    "matched": 27,
+    "total": 28,
+    "completed": 28,
+    "valid_inferences": 26,
+    "strict_matches": 23,
+    "mismatches": [
+      {
+        "id": "BC-18",
+        "expected": "same_day_human_review",
+        "actual": "routine_appointment"
+      }
+    ],
+    "invalid_inference_ids": [
+      "BC-16",
+      "BC-17"
+    ],
+    "semantic_mismatches": [
+      {
+        "id": "BC-14",
+        "field": "scope",
+        "expected": "unsupported",
+        "actual": "supported"
+      },
+      {
+        "id": "BC-16",
+        "field": "warning",
+        "expected": [
+          "absent"
+        ],
+        "actual": null
+      },
+      {
+        "id": "BC-16",
+        "field": "contradiction",
+        "expected": true,
+        "actual": null
+      },
+      {
+        "id": "BC-16",
+        "field": "intent",
+        "expected": "appointment_request",
+        "actual": null
+      },
+      {
+        "id": "BC-17",
+        "field": "warning",
+        "expected": [
+          "absent"
+        ],
+        "actual": null
+      },
+      {
+        "id": "BC-17",
+        "field": "contradiction",
+        "expected": true,
+        "actual": null
+      },
+      {
+        "id": "BC-17",
+        "field": "intent",
+        "expected": "appointment_request",
+        "actual": null
+      },
+      {
+        "id": "BC-18",
+        "field": "contradiction",
+        "expected": true,
+        "actual": false
+      },
+      {
+        "id": "BC-22",
+        "field": "information_sufficiency",
+        "expected": [
+          "insufficient",
+          "unclear"
+        ],
+        "actual": "sufficient"
+      }
+    ],
+    "pending_ids": [],
+    "per_family": {
+      "current_warning_paraphrases": {
+        "total": 6,
+        "completed": 6,
+        "matched": 6,
+        "valid_inferences": 6,
+        "strict_matches": 6
+      },
+      "embedded_instructions": {
+        "total": 4,
+        "completed": 4,
+        "matched": 4,
+        "valid_inferences": 4,
+        "strict_matches": 4
+      },
+      "genuine_timeline_conflicts": {
+        "total": 3,
+        "completed": 3,
+        "matched": 2,
+        "valid_inferences": 1,
+        "strict_matches": 0
+      },
+      "non_appointment_intent": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "required_information": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 1
+      },
+      "routine_boundaries": {
+        "total": 4,
+        "completed": 4,
+        "matched": 4,
+        "valid_inferences": 4,
+        "strict_matches": 4
+      },
+      "scope_boundaries": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "warning_context_boundaries": {
+        "total": 5,
+        "completed": 5,
+        "matched": 5,
+        "valid_inferences": 5,
+        "strict_matches": 4
+      }
+    }
+  },
+  "disclosed_challenge_retest": {
+    "matched": 28,
+    "total": 28,
+    "completed": 28,
+    "valid_inferences": 28,
+    "strict_matches": 28,
+    "mismatches": [],
+    "invalid_inference_ids": [],
+    "semantic_mismatches": [],
+    "pending_ids": [],
+    "per_family": {
+      "current_warning_paraphrases": {
+        "total": 6,
+        "completed": 6,
+        "matched": 6,
+        "valid_inferences": 6,
+        "strict_matches": 6
+      },
+      "embedded_instructions": {
+        "total": 4,
+        "completed": 4,
+        "matched": 4,
+        "valid_inferences": 4,
+        "strict_matches": 4
+      },
+      "genuine_timeline_conflicts": {
+        "total": 3,
+        "completed": 3,
+        "matched": 3,
+        "valid_inferences": 3,
+        "strict_matches": 3
+      },
+      "non_appointment_intent": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "required_information": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "routine_boundaries": {
+        "total": 4,
+        "completed": 4,
+        "matched": 4,
+        "valid_inferences": 4,
+        "strict_matches": 4
+      },
+      "scope_boundaries": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "warning_context_boundaries": {
+        "total": 5,
+        "completed": 5,
+        "matched": 5,
+        "valid_inferences": 5,
+        "strict_matches": 5
+      }
+    }
+  },
+  "fresh_temporal_check": {
+    "matched": 6,
+    "total": 8,
+    "completed": 8,
+    "valid_inferences": 6,
+    "strict_matches": 6,
+    "mismatches": [
+      {
+        "id": "FT-03",
+        "expected": "routine_appointment",
+        "actual": "same_day_human_review"
+      },
+      {
+        "id": "FT-08",
+        "expected": "routine_appointment",
+        "actual": "same_day_human_review"
+      }
+    ],
+    "invalid_inference_ids": [
+      "FT-03",
+      "FT-08"
+    ],
+    "semantic_mismatches": [
+      {
+        "id": "FT-03",
+        "field": "warning",
+        "expected": [
+          "absent"
+        ],
+        "actual": null
+      },
+      {
+        "id": "FT-03",
+        "field": "contradiction",
+        "expected": false,
+        "actual": null
+      },
+      {
+        "id": "FT-03",
+        "field": "intent",
+        "expected": "appointment_request",
+        "actual": null
+      },
+      {
+        "id": "FT-03",
+        "field": "scope",
+        "expected": "supported",
+        "actual": null
+      },
+      {
+        "id": "FT-08",
+        "field": "warning",
+        "expected": [
+          "absent"
+        ],
+        "actual": null
+      },
+      {
+        "id": "FT-08",
+        "field": "contradiction",
+        "expected": false,
+        "actual": null
+      },
+      {
+        "id": "FT-08",
+        "field": "intent",
+        "expected": "appointment_request",
+        "actual": null
+      },
+      {
+        "id": "FT-08",
+        "field": "scope",
+        "expected": "supported",
+        "actual": null
+      }
+    ],
+    "pending_ids": [],
+    "per_family": {
+      "continuity_and_intermittency": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "event_anchored_onset": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "retained_claims_and_explicit_corrections": {
+        "total": 2,
+        "completed": 2,
+        "matched": 1,
+        "valid_inferences": 1,
+        "strict_matches": 1
+      },
+      "separate_concerns_and_overlapping_intervals": {
+        "total": 2,
+        "completed": 2,
+        "matched": 1,
+        "valid_inferences": 1,
+        "strict_matches": 1
+      }
+    }
+  },
+  "disclosed_temporal_retest": {
+    "matched": 8,
+    "total": 8,
+    "completed": 8,
+    "valid_inferences": 8,
+    "strict_matches": 8,
+    "mismatches": [],
+    "invalid_inference_ids": [],
+    "semantic_mismatches": [],
+    "pending_ids": [],
+    "per_family": {
+      "continuity_and_intermittency": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "event_anchored_onset": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "retained_claims_and_explicit_corrections": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      },
+      "separate_concerns_and_overlapping_intervals": {
+        "total": 2,
+        "completed": 2,
+        "matched": 2,
+        "valid_inferences": 2,
+        "strict_matches": 2
+      }
+    }
+  },
+  "limits": "Invented development cases and a separately reported frozen synthetic challenge; no clinical ground truth or universal accuracy claim."
 }

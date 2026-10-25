@@ -1,5 +1,5 @@
 {
-  "timestamp": "2026-10-24T22:37:24.675566+00:00",
+  "timestamp": "2026-10-25T04:39:01.435428+00:00",
   "model_status": {
     "provider": "ollama",
     "model": "qwen3:4b-instruct",
@@ -14,27 +14,38 @@
     "parameter_size": "4.0B",
     "quantization": "Q4_K_M"
   },
+  "prompt_version": "local-intake-v12",
+  "policy_version": "demo-policy-0.4",
   "scope": "Real local inference plus browser, HTTP, SQLite and staff workflow on invented inputs; not clinical validation",
   "checks": [
     {
       "name": "Fresh local inference through browser submission and persisted receipt",
       "passed": true,
-      "elapsed_seconds": 3.082,
+      "elapsed_seconds": 5.325,
       "ai": {
         "provider": "ollama",
         "model": "qwen3:4b-instruct",
         "status": "valid",
         "local": true,
-        "latency_ms": 1795,
-        "prompt_tokens": 995,
-        "completion_tokens": 90,
-        "summary": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks.",
+        "latency_ms": 4967,
+        "prompt_tokens": 1702,
+        "completion_tokens": 220,
+        "summary": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks. \u2026 current",
         "summary_kind": "model_selected_verbatim_excerpts",
         "evidence": [
           {
-            "quote": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks.",
+            "id": "S001",
+            "field": "symptom_text",
             "start": 0,
-            "end": 102
+            "end": 102,
+            "quote": "I would like a routine visit for mild dry skin on my hands that has stayed the same for several weeks."
+          },
+          {
+            "id": "onset_currentness",
+            "field": "onset_currentness",
+            "start": 0,
+            "end": 7,
+            "quote": "current"
           }
         ],
         "error": null
@@ -52,19 +63,93 @@
         "model": "qwen3:4b-instruct",
         "status": "valid",
         "local": true,
-        "latency_ms": 1861,
-        "prompt_tokens": 985,
-        "completion_tokens": 79,
-        "summary": "I have an appointment question that needs a staff member today.",
+        "latency_ms": 4438,
+        "prompt_tokens": 1662,
+        "completion_tokens": 194,
+        "summary": "I have an appointment question that needs a staff member today. \u2026 current",
         "summary_kind": "model_selected_verbatim_excerpts",
         "evidence": [
           {
-            "quote": "I have an appointment question that needs a staff member today.",
+            "id": "S001",
+            "field": "symptom_text",
             "start": 0,
-            "end": 63
+            "end": 63,
+            "quote": "I have an appointment question that needs a staff member today."
+          },
+          {
+            "id": "onset_currentness",
+            "field": "onset_currentness",
+            "start": 0,
+            "end": 7,
+            "quote": "current"
           }
         ],
         "error": null
+      }
+    },
+    {
+      "name": "Conflicting narrative and structured onset retain exact field-labelled source excerpts",
+      "passed": true,
+      "case_id": "BC-18",
+      "ai": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "status": "valid",
+        "local": true,
+        "latency_ms": 6838,
+        "prompt_tokens": 1808,
+        "completion_tokens": 351,
+        "summary": "I want a routine appointment about the current mild wrist ache. \u2026  This single continuous episode started four weeks ago and there has been no separate new episode. \u2026 This same current episode started one hour ago. \u2026 I want a routine appointment about the current mild wrist ache.",
+        "summary_kind": "model_selected_verbatim_excerpts",
+        "evidence": [
+          {
+            "id": "S001",
+            "field": "symptom_text",
+            "start": 0,
+            "end": 63,
+            "quote": "I want a routine appointment about the current mild wrist ache."
+          },
+          {
+            "id": "S002",
+            "field": "symptom_text",
+            "start": 63,
+            "end": 161,
+            "quote": " This single continuous episode started four weeks ago and there has been no separate new episode."
+          },
+          {
+            "id": "onset",
+            "field": "onset",
+            "start": 0,
+            "end": 47,
+            "quote": "This same current episode started one hour ago."
+          },
+          {
+            "id": "S001",
+            "field": "symptom_text",
+            "start": 0,
+            "end": 63,
+            "quote": "I want a routine appointment about the current mild wrist ache."
+          }
+        ],
+        "error": null
+      }
+    },
+    {
+      "name": "Real primary model warning survives injected verifier failure and is visibly incomplete",
+      "passed": true,
+      "fault_injection": "Verifier TimeoutError after actual primary inference",
+      "ai": {
+        "provider": "ollama",
+        "model": "qwen3:4b-instruct",
+        "status": "partial",
+        "local": true,
+        "latency_ms": 2028,
+        "prompt_tokens": null,
+        "completion_tokens": null,
+        "summary": "",
+        "summary_kind": null,
+        "evidence": [],
+        "error": "The primary model detected a potential current warning. Additional verification failed; emergency guidance is retained and staff review is required."
       }
     },
     {
@@ -76,6 +161,6 @@
       "passed": true
     }
   ],
-  "passed": 5,
+  "passed": 7,
   "browser_errors": []
 }

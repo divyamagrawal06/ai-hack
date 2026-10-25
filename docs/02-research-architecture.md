@@ -1,6 +1,6 @@
 # 02 — Research and architecture decisions
 
-> **Design snapshot (policy 0.1).** This document preserves the original requirements and proposed contracts. The runnable policy 0.3 implementation, executed checks, research updates and explicit deviations are described in [the submission report](../reports/submission-report.md) and [implementation notes](../reports/implementation.md). Statements below about unstarted work or blocked reading describe the earlier specification stage.
+> **Design snapshot (policy 0.1).** This document preserves the original requirements and proposed contracts. The current runnable implementation, executed checks, research updates and explicit deviations are described in [the submission report](../reports/submission-report.md) and [implementation notes](../reports/implementation.md). Statements below about unstarted work or blocked reading describe the earlier specification stage.
 
 ## Evidence status and reading record
 

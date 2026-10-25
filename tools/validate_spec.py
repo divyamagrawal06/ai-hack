@@ -104,7 +104,7 @@ for case in cases:
         require(exp["route"] == "same_day_human_review", f"{cid}: unusable model fallback")
 require(set(timing_gaps) == {"FX-08", "FX-09", "FX-38"}, "Model-dependent timing gaps must stay explicit")
 
-docs = sorted((ROOT / "docs").glob("*.md"))
+docs = sorted((ROOT / "docs").glob("0[1-7]-*.md"))
 require(len(docs) == 7, "Expected seven specification documents")
 req_text = (ROOT / "docs/01-requirements.md").read_text(encoding="utf-8")
 plan_text = (ROOT / "docs/06-evaluation-test-plan.md").read_text(encoding="utf-8")

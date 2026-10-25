@@ -1,0 +1,1491 @@
+{
+  "evaluation": "offline_captured_response_replay",
+  "timestamp": "2026-10-25T04:34:27.787179+00:00",
+  "live_model_calls": 0,
+  "network_calls": 0,
+  "adapter_version": "local-intake-v12",
+  "captured_prompt_version": "local-intake-v11",
+  "note": "Runs the v12 adapter against unchanged v11 recorded replies. This is not fresh v12 inference and does not replace the original live run.",
+  "prior_live_report": "reports\\live\\20261025T042343.632625Z\\results.json",
+  "prior_live_report_sha256": "6f1d3b291436436fb404540207a2d6db13cf65ef4bbc823b83ef9293e8f57a13",
+  "source_hashes": {
+    "clinic/assessors.py": "c2178c88b8b928227ca1bd51d2b4618f7054f74595f151bc6080c385dcfd7483",
+    "clinic/policy.py": "51c4df437627ac7e479714af9c149b59c532ca0de0121bff58cdb23c536bd922",
+    "clinic/config.py": "b1b7790450de0690dc6a6f08e2faf0df2374853d92ec218cb1c3650a55b5baf9"
+  },
+  "cases": [
+    {
+      "id": "FX-01",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-02",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H02"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-03",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-04",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-05",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-06",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-07",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_possible"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_possible"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-08",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-09",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-10",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "information_sufficiency",
+          "before": "sufficient",
+          "after": "insufficient",
+          "basis": "missing_required_form_fields",
+          "missing_fields": [
+            "symptom_text"
+          ]
+        },
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-11",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-12",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "information_sufficiency",
+          "before": "sufficient",
+          "after": "insufficient",
+          "basis": "missing_required_form_fields",
+          "missing_fields": [
+            "CHECK-02"
+          ]
+        },
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-13",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H02"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-14",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": true,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "contradiction",
+          "before": false,
+          "after": true,
+          "basis": "independent_timeline_verification"
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-15",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "other",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "other",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-16",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-17",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "scope",
+          "before": "supported",
+          "after": "unsupported",
+          "basis": "structured_policy_scope"
+        },
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-18",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "appointment_request",
+        "scope": "unclear",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "scope",
+          "before": "unsupported",
+          "after": "unclear",
+          "basis": "structured_policy_scope"
+        },
+        {
+          "field": "information_sufficiency",
+          "before": "sufficient",
+          "after": "insufficient",
+          "basis": "missing_required_form_fields",
+          "missing_fields": [
+            "age_years"
+          ]
+        },
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-19",
+      "reference_comparison_included": false,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-20",
+      "reference_comparison_included": false,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-21",
+      "reference_comparison_included": false,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-22",
+      "reference_comparison_included": false,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-23",
+      "reference_comparison_included": false,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-24",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-25",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-26",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-27",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "E02",
+            "H01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-28",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 4,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "warning",
+          "before": "current_present",
+          "after": "absent",
+          "basis": "source_attribution_and_second_assessment",
+          "human_review_required": true
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-29",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-30",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-32",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H02"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-33",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H02"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-34",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-35",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "E01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-36",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-37",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-38",
+      "reference_comparison_included": true,
+      "expected_route": "emergency_guidance",
+      "prior_live_route": "emergency_guidance",
+      "replayed_route": "emergency_guidance",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "current_present"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-39",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "other",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01",
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-40",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-41",
+      "reference_comparison_included": true,
+      "expected_route": "routine_appointment",
+      "prior_live_route": "routine_appointment",
+      "replayed_route": "routine_appointment",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-42",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H02"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-43",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "unsupported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H03"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    },
+    {
+      "id": "FX-44",
+      "reference_comparison_included": true,
+      "expected_route": "same_day_human_review",
+      "prior_live_route": "same_day_human_review",
+      "replayed_route": "same_day_human_review",
+      "adapter_status": "valid",
+      "request_payloads_identical": true,
+      "captured_calls_replayed": 2,
+      "primary_assessment": {
+        "contradiction": false,
+        "human_review_indication": false,
+        "information_sufficiency": "sufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciled_assessment": {
+        "contradiction": false,
+        "human_review_indication": true,
+        "information_sufficiency": "insufficient",
+        "intent": "appointment_request",
+        "scope": "supported",
+        "warning": "absent"
+      },
+      "reconciliation": [
+        {
+          "field": "information_sufficiency",
+          "before": "sufficient",
+          "after": "insufficient",
+          "basis": "missing_required_form_fields",
+          "missing_fields": [
+            "onset_currentness"
+          ]
+        },
+        {
+          "field": "human_review_indication",
+          "before": false,
+          "after": true,
+          "basis": "policy_requires_review",
+          "matched_rules": [
+            "H01"
+          ]
+        }
+      ],
+      "questions_hash": "d06bb10fd77011a075e7717b132a9f01fb815f52ec7cf4f1dc3e730cdd03fbfa"
+    }
+  ],
+  "summary": {
+    "replayed_cases": 43,
+    "valid_adapter_results": 43,
+    "comparable_cases": 38,
+    "route_matches": 38,
+    "all_request_payloads_identical": true,
+    "fresh_model_performance_measured": false
+  },
+  "prior_live_report_canonical_sha256": "da5d6bc2218acd8ce713bdab88a27b62b5f84559f396b618989accff5682636e"
+}

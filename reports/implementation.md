@@ -2,11 +2,14 @@
 
 ## Current local AI integration
 
+- Current policy is `demo-policy-0.4`: a validated primary warning survives a later verifier failure, but a partial result cannot establish routine eligibility. The first frozen challenge used policy 0.3; that original result and source snapshots are preserved separately.
 - `GET /api/ai/status` probes the actual local Ollama model without generating text. It reports ready, offline, model missing or invalid configuration.
 - `POST /api/requests` defaults to `local_ai`; the request is saved before inference. The six enum assessments and exact source excerpts are validated before routing.
 - Public request receipts include a compact `ai` object: provider, local flag, model, status, inference duration, token counts, exact excerpts and any failure. The authenticated staff view retains the full raw prompt/response, model digest and prompt hash.
 - `CLINIC_LOCAL_MODEL` defaults to `qwen3:4b-instruct`; `CLINIC_OLLAMA_URL` accepts literal loopback HTTP addresses only. Cloud Ollama models are refused in local mode. The transport bypasses system proxies and refuses redirects.
-- Local inference has a 90-second wall deadline, a single-inference semaphore and a 512-token output budget. Busy, offline, malformed or timed-out requests visibly defer to staff. There is no authored-response substitution.
+- Local inference has a 90-second total wall deadline and a semaphore serializing complete pipelines. The primary assessment and subsequent attributed assessment have 512-token output budgets. Timeline claim extraction and conditional source attribution have 768-token budgets. Busy, offline, malformed or timed-out requests visibly defer to staff, preserving any validated primary emergency warning. There is no authored-response substitution.
+- A focused timeline check can add a conflict/human-review indication. When no independent emergency guard applies and the primary model signals a warning, source attribution distinguishes actual and fictional text. If both exist, an additional assessment of the actual excerpts can replace a false model warning with human review. It cannot suppress independent emergency checks or turn a disputed emergency into routine. Every verifier response and reconciliation is retained; public token counts sum all calls.
+- Primary and attributed assessments select application-generated source IDs mapped to exact input spans. Timeline verification extracts source-linked timing claims, then compares their episode relationships across the description and structured onset. Evidence identifies its source field. Trusted form scope and completeness correct contradictory model flags, with the raw model judgment and reconciliation preserved.
 - Staff detail automatically refreshes after pending AI completes; review and booking drafts survive refreshes. Original text, model findings and human decisions remain distinct.
 - The launcher discovers the portable runtime or an existing Ollama installation. The Windows setup verifies pinned runtime files and the executable signature, enables Vulkan and downloads the model. Runtime/model files and SQLite are excluded from the submission ZIP.
 - SQLite connections now close reliably on Windows; browser tooling discovers installed Chrome or Edge.
@@ -15,7 +18,7 @@
 
 # Implementation and reproducibility notes
 
-Current runnable policy: **demo-policy-0.3**. Runtime: Python 3.11+ standard library, SQLite, static HTML/CSS/JavaScript. Tests ran on Python 3.12 with Chromium through Playwright. No build pipeline or third-party runtime install is required.
+Earlier snapshot policy: **demo-policy-0.3**. Runtime: Python 3.11+ standard library, SQLite, static HTML/CSS/JavaScript. These earlier tests ran on Python 3.12 with Chromium through Playwright. No build pipeline or third-party runtime install is required.
 
 ## Components and flow
 

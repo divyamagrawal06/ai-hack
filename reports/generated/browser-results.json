@@ -1,62 +1,62 @@
 {
-  "timestamp": "2026-10-24T22:14:18.065500+00:00",
+  "timestamp": "2026-10-25T04:25:56.074580+00:00",
   "scope": "Local synthetic browser integration; not clinical or live-model validation",
   "browser": "Chromium via Playwright",
   "checks": [
     {
       "name": "Emergency notice available with JavaScript disabled",
       "status": "passed",
-      "duration_seconds": 0.456
+      "duration_seconds": 0.881
     },
     {
       "name": "Client/server text-guard parity across 44 invented descriptions",
       "status": "passed",
-      "duration_seconds": 0.204
+      "duration_seconds": 0.4
     },
     {
       "name": "All 12 Yes/Unsure structured signals show guidance synchronously offline before submit",
       "status": "passed",
-      "duration_seconds": 0.598
+      "duration_seconds": 1.206
     },
     {
       "name": "Three previous model-dependent examples now trigger bounded local guidance offline",
       "status": "passed",
-      "duration_seconds": 0.104
+      "duration_seconds": 0.256
     },
     {
       "name": "Negated/history examples and current warning after historical clause",
       "status": "passed",
-      "duration_seconds": 0.015
+      "duration_seconds": 0.021
     },
     {
       "name": "Actual persisted replay receipt, route, mode and unbooked status",
       "status": "passed",
-      "duration_seconds": 0.191
+      "duration_seconds": 0.244
     },
     {
       "name": "Edited text cannot masquerade as an unchanged assessment replay",
       "status": "passed",
-      "duration_seconds": 0.082
+      "duration_seconds": 0.179
     },
     {
       "name": "Staff login, human review, booking and actual audit trail",
       "status": "passed",
-      "duration_seconds": 0.74
+      "duration_seconds": 0.839
     },
     {
       "name": "Real failed-persistence response never shows receipt and keeps emergency guidance",
       "status": "passed",
-      "duration_seconds": 0.929
+      "duration_seconds": 1.407
     },
     {
       "name": "390px mobile layout has no horizontal overflow and retains emergency notice",
       "status": "passed",
-      "duration_seconds": 0.43
+      "duration_seconds": 0.743
     },
     {
       "name": "Basic label, alert and keyboard skip-link semantics (not a screen-reader audit)",
       "status": "passed",
-      "duration_seconds": 0.362
+      "duration_seconds": 0.632
     },
     {
       "name": "No uncaught browser JavaScript errors",
@@ -67,21 +67,21 @@
   "passed": 12,
   "failed": 0,
   "synchronous_emergency_handler_ms": [
-    18.19999999552965,
-    1.2000000029802322,
-    0.9000000059604645,
-    1,
-    1.2000000029802322,
-    0.8999999985098839,
+    34.19999999552965,
+    2.2999999970197678,
+    2.600000001490116,
+    2.5,
+    2,
+    1.6999999955296516,
     1.8999999985098839,
-    1.2000000029802322,
-    1.2999999970197678,
-    1.5,
-    1.2999999970197678,
-    1.1999999955296516,
-    2.3000000044703484,
-    1.8000000044703484,
-    1.3999999985098839
+    1.7000000029802322,
+    3.100000001490116,
+    2.2000000029802322,
+    1.7000000029802322,
+    1.5999999940395355,
+    5.699999995529652,
+    2.2000000029802322,
+    1.6000000014901161
   ],
   "timing_limitations": "In-process input-event to DOM-state measurement, not human comprehension or universal detection. No clinical latency target established."
 }

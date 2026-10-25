@@ -76,17 +76,17 @@ def main():
             figures.append(f'<section class="figure"><h2>{caption}</h2><p>Actual screenshot of the synthetic prototype; no patient records.</p><img alt="{caption}" src="data:image/png;base64,{data}"></section>')
     document='''<!doctype html><html lang="en"><head><meta charset="utf-8"><title>CareRoute submission report</title><style>
     @page { size:A4; margin:18mm 15mm 19mm; }
-    body{font:10pt/1.42 Arial,sans-serif;color:#20314f;max-width:1000px;margin:32px auto;padding:0 20px}
-    h1{font-size:24pt;line-height:1.12;color:#315de0;border-bottom:5px solid #315de0;padding-bottom:14px;margin:0 0 18px}
-    h2{font-size:14pt;margin-top:18px;color:#315de0;break-after:avoid}h3{break-after:avoid}
+    body{font:10pt/1.42 Arial,sans-serif;color:#35313b;max-width:1000px;margin:32px auto;padding:0 20px}
+    h1{font-size:24pt;line-height:1.12;color:#51415f;border-bottom:3px solid #51415f;padding-bottom:14px;margin:0 0 18px}
+    h2{font-size:14pt;margin-top:18px;color:#51415f;break-after:avoid}h3{break-after:avoid}
     p{margin:9px 0}p,li{orphans:3;widows:3}p,ol,ul,pre{break-inside:avoid}ol,ul{margin:8px 0;padding-left:22px}
-    a{color:#315de0}table{width:100%;border-collapse:collapse;font-size:9pt;margin:12px 0}
-    th,td{border:1px solid #cbdad8;padding:6px;text-align:left;vertical-align:top}th{background:#e8efff}tr{break-inside:avoid}
-    code{font:9pt monospace;background:#edf4f2;padding:1px 3px}pre{white-space:pre-wrap}
+    a{color:#51415f}table{width:100%;border-collapse:collapse;font-size:9pt;margin:12px 0}
+    th,td{border:1px solid #dbd6df;padding:6px;text-align:left;vertical-align:top}th{background:#f3eff7}tr{break-inside:avoid}
+    code{font:9pt monospace;background:#f3eff7;padding:1px 3px}pre{white-space:pre-wrap}
     .figure{break-before:page}.figure img{display:block;max-width:100%;max-height:230mm;object-fit:contain;margin:12px auto}
     @media print{body{margin:0;padding:0;max-width:none}a{text-decoration:none}}
     </style></head><body>'''+body+''.join(figures)+'</body></html>'
-    output=ROOT/'reports/submission-report.html'; output.write_text(document)
+    output=ROOT/'reports/submission-report.html'; output.write_text(document, encoding='utf-8')
     if not args.html_only:
         from playwright.sync_api import sync_playwright
         with sync_playwright() as p:

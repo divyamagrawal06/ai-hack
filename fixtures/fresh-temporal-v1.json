@@ -1,0 +1,390 @@
+{
+  "challenge_version": "fresh-temporal-v1",
+  "policy_version": "demo-policy-0.4",
+  "authored_at": "2026-10-25T03:52:13.879881+00:00",
+  "authoring_local_date": "2026-10-25",
+  "authored_case_count": 8,
+  "status": "frozen_before_next_pipeline_and_single_evaluation",
+  "contains_real_patient_data": false,
+  "clinical_ground_truth": false,
+  "authoring_provenance": [
+    "Targeted fresh generalization check authored after the first disclosed blind-v1 and v6 regression failures; not a fresh broad clinical benchmark.",
+    "The author saw earlier disclosed failure categories and returned model outputs, but did not inspect the current v7 tuning prompt.",
+    "The tuning agent receives only count, dataset path, timestamp and hash until its next frozen pipeline is ready.",
+    "Every narrative is newly invented. No model calls were used to create, label, choose, rewrite or filter cases.",
+    "Four cases contain retained incompatible temporal facts; four contain consistent recurrence, event order, separate concerns or an explicitly withdrawn draft.",
+    "Labels are authored interpretations of the fictional administrative policy, not clinical ground truth.",
+    "All inputs and labels are frozen before the next pipeline freeze and single evaluation. Subsequent use is disclosed development evidence."
+  ],
+  "families": [
+    "continuity_and_intermittency",
+    "event_anchored_onset",
+    "retained_claims_and_explicit_corrections",
+    "separate_concerns_and_overlapping_intervals"
+  ],
+  "cases": [
+    {
+      "id": "FT-01",
+      "family": "continuity_and_intermittency",
+      "title": "One sensation both ended permanently and remains continuous",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "Please arrange a normal visit for a faint buzzing in my ear. This same buzzing has been continuous since I woke today. It ended completely before I woke today and has not restarted, yet that very same buzzing is still ongoing right now."
+      },
+      "expected": {
+        "route": "same_day_human_review",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": true,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "The same current sensation is asserted to have ended without restarting and to be continuously ongoing; these retained claims are incompatible.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": true,
+        "scope": "supported",
+        "human_review_indication": true
+      }
+    },
+    {
+      "id": "FT-02",
+      "family": "continuity_and_intermittency",
+      "title": "Intermittent problem can recur without a new first onset",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "I would like an ordinary visit for mild itching behind my knee. I first noticed it last month. It comes and goes, with entirely clear days between episodes; it returned this morning after two clear days."
+      },
+      "expected": {
+        "route": "routine_appointment",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": false,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "An explicitly intermittent condition can recur after symptom-free periods without contradicting its first occurrence last month.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": false,
+        "scope": "supported",
+        "human_review_indication": false
+      }
+    },
+    {
+      "id": "FT-03",
+      "family": "separate_concerns_and_overlapping_intervals",
+      "title": "A resolved problem and unrelated present concern",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "Please book a routine appointment for a painless callus on my heel that is still present. A faint ear buzzing ended completely earlier this week and has not returned. The buzzing and the heel callus are unrelated concerns."
+      },
+      "expected": {
+        "route": "routine_appointment",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": false,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "Resolution of a different concern does not conflict with the current persistence of the requested concern.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": false,
+        "scope": "supported",
+        "human_review_indication": false
+      }
+    },
+    {
+      "id": "FT-04",
+      "family": "separate_concerns_and_overlapping_intervals",
+      "title": "An absence interval inside a claimed uninterrupted interval",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "I want a normal visit for a mild itch on my left palm that is still present. This same itch was completely absent from Sunday night through Tuesday morning. Over that same week it was present without any breaks from Saturday afternoon through Wednesday evening."
+      },
+      "expected": {
+        "route": "same_day_human_review",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": true,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "The claimed symptom-free interval lies inside the claimed uninterrupted presence interval for the same concern.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": true,
+        "scope": "supported",
+        "human_review_indication": true
+      }
+    },
+    {
+      "id": "FT-05",
+      "family": "event_anchored_onset",
+      "title": "Structured event order conflicts with the narrative",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "I would like an ordinary visit for the current mild patch on my shoulder. This exact patch was already continuously present while I packed at my old address, long before the move. There has been no separate new episode since the move.",
+        "onset": "The current patch began after I finished moving house."
+      },
+      "expected": {
+        "route": "same_day_human_review",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": true,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "The same episode cannot begin after the move when it was continuously present before the move; structured onset and narrative refer to the same event.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": true,
+        "scope": "supported",
+        "human_review_indication": true
+      }
+    },
+    {
+      "id": "FT-06",
+      "family": "event_anchored_onset",
+      "title": "Structured and narrated event order agree",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "Please arrange a routine visit for a mild shoulder patch. I completed the move on Friday. The patch was absent throughout packing and moving, first appeared on Saturday, and is still present.",
+        "onset": "The current patch began after I finished moving house."
+      },
+      "expected": {
+        "route": "routine_appointment",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": false,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "The stated Saturday appearance follows the Friday move, matching the structured onset without a contradictory episode.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": false,
+        "scope": "supported",
+        "human_review_indication": false
+      }
+    },
+    {
+      "id": "FT-07",
+      "family": "retained_claims_and_explicit_corrections",
+      "title": "Mutually exclusive occurrence schedules",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "I need an ordinary appointment about mild mouth soreness. During the past week it occurred exclusively at night, with no daytime episodes. Over that very same week the same soreness occurred exclusively in daytime, with no nighttime episodes."
+      },
+      "expected": {
+        "route": "same_day_human_review",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": true,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "Two retained exclusive occurrence schedules for the same concern and same week are mutually incompatible.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": true,
+        "scope": "supported",
+        "human_review_indication": true
+      }
+    },
+    {
+      "id": "FT-08",
+      "family": "retained_claims_and_explicit_corrections",
+      "title": "A withdrawn draft statement is not a retained conflicting fact",
+      "synthetic": true,
+      "inputs": {
+        "preferred_times": [
+          "weekday afternoon"
+        ],
+        "self_reported_urgency": "routine",
+        "age_years": 42,
+        "language": "en",
+        "requester": "self",
+        "pregnancy_postpartum": false,
+        "onset_currentness": "current",
+        "no_time_preference": false,
+        "emergency_answers": {
+          "CHECK-01": "no",
+          "CHECK-02": "no",
+          "CHECK-03": "no",
+          "CHECK-04": "no",
+          "CHECK-05": "no",
+          "CHECK-06": "no"
+        },
+        "symptom_text": "Please arrange a normal visit for a mild patch on my forearm. My earlier draft said it had been present all winter; that statement was a mistake about another person and I withdraw it. My own patch first appeared yesterday and has never occurred before.",
+        "onset": "My own patch first appeared yesterday."
+      },
+      "expected": {
+        "route": "routine_appointment",
+        "warning_any_of": [
+          "absent"
+        ],
+        "contradiction": false,
+        "intent": "appointment_request",
+        "scope": "supported"
+      },
+      "policy_rationale": "The narrative explicitly withdraws an earlier draft about another person and gives one clear current self-history; it does not retain incompatible claims.",
+      "reference_assessment_for_policy_check": {
+        "warning": "absent",
+        "intent": "appointment_request",
+        "information_sufficiency": "sufficient",
+        "contradiction": false,
+        "scope": "supported",
+        "human_review_indication": false
+      }
+    }
+  ]
+}

@@ -1,0 +1,17 @@
+{
+  "file": "fresh-temporal-v1.json",
+  "sha256": "b24598323832983fe49cc60e5608aa0eaa98be74ccfa1b9df62658fffd7f8d55",
+  "frozen_at": "2026-10-25T03:52:13.879881+00:00",
+  "case_count": 8,
+  "family_count": 4,
+  "model_calls_before_freeze": 0,
+  "scope": "Targeted fresh temporal generalization check after disclosed failures; unseen texts for the next tuning-agent freeze.",
+  "expected_route_counts": {
+    "routine_appointment": 4,
+    "same_day_human_review": 4,
+    "emergency_guidance": 0
+  },
+  "policy_source_sha256": "51c4df437627ac7e479714af9c149b59c532ca0de0121bff58cdb23c536bd922",
+  "config_source_sha256": "b1b7790450de0690dc6a6f08e2faf0df2374853d92ec218cb1c3650a55b5baf9",
+  "validation": "All inputs passed validation and all authored reference assessments still map to their expected routes under current policy."
+}

@@ -1,0 +1,16 @@
+{
+  "file": "blind-challenge-v1.json",
+  "sha256": "b417c38ab53a821c5dcecdaba9fc6a7daefcf7c07fd1a055722af9e61cd8b98a",
+  "frozen_at": "2026-10-25T03:27:49.845456+00:00",
+  "case_count": 28,
+  "family_count": 8,
+  "model_calls_before_freeze": 0,
+  "expected_route_counts": {
+    "routine_appointment": 10,
+    "same_day_human_review": 10,
+    "emergency_guidance": 8
+  },
+  "policy_source_sha256": "aea54ff82bb23cbe9f22051d3ddc82732a7abf9ff54499242af767bd91a1ae55",
+  "config_source_sha256": "b33be2aff982e03c9996893a9b6e63ff33805b793a5901128ef88d65ffd8ccd3",
+  "validation": "All inputs passed HTTP input validation; every expected route matched deterministic policy supplied with its authored reference assessment."
+}

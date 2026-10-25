@@ -1,6 +1,6 @@
 # Evaluation and test plan
 
-> **Design snapshot (policy 0.1).** This document preserves the original requirements and proposed contracts. The runnable policy 0.3 implementation, executed checks, research updates and explicit deviations are described in [the submission report](../reports/submission-report.md) and [implementation notes](../reports/implementation.md). Statements below about unstarted work or blocked reading describe the earlier specification stage.
+> **Design snapshot (policy 0.1).** This document preserves the original requirements and proposed contracts. The current runnable implementation, executed checks, research updates and explicit deviations are described in [the submission report](../reports/submission-report.md) and [implementation notes](../reports/implementation.md). Statements below about unstarted work or blocked reading describe the earlier specification stage.
 
 **Status:** specification only, synthetic records only. No model experiments, application tests, usability study, or clinical evaluation have been run. The 44 fixtures contain authored expectations under `demo-policy-0.1`; they are not a measured benchmark result. The policy and its example labels are not approved clinical guidance.
 

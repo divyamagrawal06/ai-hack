@@ -28,8 +28,10 @@ The test suite also exercises a disconnected model. CareRoute retains the saved 
 
 ## Useful answers for judges
 
-- **What is AI here?** A local Qwen3 4B Instruct model performs six structured semantic assessments and selects exact evidence excerpts.
+- **What is AI here?** A local Qwen3 4B Instruct model performs six structured semantic assessments, selects exact evidence excerpts, and checks timeline consistency. Conditional source attribution helps distinguish an actual warning from quoted fictional material.
 - **What is deterministic?** Input validation, immediate warning checks, routing precedence, excerpt validation, persistence, permissions and booking transitions.
 - **Why local?** No hosted inference cost or key is needed for the demo; inputs stay on the laptop in local mode.
 - **Can it handle real patients?** This demonstration uses invented records and an illustrative policy. Clinical validation, approved scope, real authentication and operational integration are outside this submission.
 - **How is it tested?** Automated API/policy contracts, real Chrome workflows, actual local-model runs and saved failure-inclusive results. See the current submission report for measured outcomes.
+- **Where did the dataset come from?** The supplied assignment asks for synthetic records and test cases; it gives no dataset or fixed accuracy target. We authored examples against our declared demonstration policy and retain raw model results.
+- **Is it 100% accurate?** State the exact measured score and denominator from the current report. Even 100% on a finite synthetic suite is not a guarantee for arbitrary input. Development and frozen challenge results are reported separately.
