@@ -27,11 +27,11 @@ def evidence_matches_original(inputs, result):
     evidence = result.get("evidence")
     if not isinstance(evidence, list):
         return False
-    text = inputs["symptom_text"]
     for span in evidence:
         if not isinstance(span, dict):
             return False
         start, end, quote = span.get("start"), span.get("end"), span.get("quote")
+        text = inputs.get(span.get("field", "symptom_text"), "")
         if (type(start) is not int or type(end) is not int or not isinstance(quote, str)
                 or not 0 <= start < end <= len(text) or text[start:end] != quote):
             return False

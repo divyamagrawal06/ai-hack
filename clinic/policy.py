@@ -80,11 +80,22 @@ def segment_text(text):
 
 
 def _supported(inputs):
+    return structured_scope(inputs) == "supported"
+
+
+def structured_scope(inputs):
+    """Authoritative form facts, independent of the narrative's model assessment."""
     age = inputs.get("age_years")
-    return (isinstance(age, (int, float)) and not isinstance(age, bool)
-            and 18 <= age <= 64 and inputs.get("language") == "en"
-            and inputs.get("requester") == "self"
-            and inputs.get("pregnancy_postpartum") is False)
+    known_age = isinstance(age, (int, float)) and not isinstance(age, bool)
+    if ((known_age and not 18 <= age <= 64)
+            or inputs.get("language") not in (None, "", "en")
+            or inputs.get("requester") not in (None, "", "self")
+            or inputs.get("pregnancy_postpartum") is True):
+        return "unsupported"
+    if (not known_age or not inputs.get("language") or not inputs.get("requester")
+            or inputs.get("pregnancy_postpartum") is not False):
+        return "unclear"
+    return "supported"
 
 
 def validate_assessment(assessment, direct=False):
@@ -144,9 +155,15 @@ def decide(inputs, assessment=None, model_status="valid", variant="no_ai", local
     if emergency_answers:
         add("E01", "A current emergency check was answered Yes or Unsure. Contact local emergency services now; do not wait for this form.", emergency_answers)
     model_warning = valid and not no_ai and ((direct and a.get("direct_route") == "emergency_guidance") or (not direct and a.get("warning") in {"current_present", "current_possible"}))
+    # A completed, valid primary warning must not disappear merely because a
+    # later verifier failed. No other partial fields can establish eligibility.
+    retained_warning = (model_status == "partial" and not no_ai and not direct and validate_assessment(assessment)
+                        and assessment.get("warning") in {"current_present", "current_possible"})
+    model_warning = model_warning or retained_warning
     if signal != "none" or model_warning:
         add("E02", "A potential current warning triggered the demonstration emergency rule. Contact local emergency services now; no diagnosis is being made.",
-            {"local_signal": signal, "original_text": inputs.get("symptom_text", ""), "assessment_warning": a.get("warning") if not direct else None,
+            {"local_signal": signal, "original_text": inputs.get("symptom_text", ""), "assessment_warning": assessment.get("warning") if retained_warning else a.get("warning") if not direct else None,
+             "primary_warning_retained_after_verification_failure": retained_warning,
              "direct_route": a.get("direct_route") if direct else None})
     if missing or (valid and not no_ai and not direct and a.get("information_sufficiency") != "sufficient"):
         add("H01", "Required request information is missing or unclear; human review is needed.", {"missing_fields": missing, "information_sufficiency": info})

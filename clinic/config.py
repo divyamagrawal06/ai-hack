@@ -1,7 +1,7 @@
 """Explicit fictional demo configuration; never infer jurisdiction from timezone."""
 import os
 
-POLICY_VERSION = "demo-policy-0.3"
+POLICY_VERSION = "demo-policy-0.4"
 DEFAULT_LOCAL_MODEL = "qwen3:4b-instruct"
 
 
