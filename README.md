@@ -21,7 +21,7 @@ Open **http://127.0.0.1:8080**. The launcher starts the portable local runtime i
 If an earlier copy is still running on port 8080, double-click **Start Final Demo.cmd**. It starts the updated code with a separate demo database at **http://127.0.0.1:8081**, without stopping the older instance.
 
 1. Click **Routine visit** to load an invented request. You can edit it.
-2. Click **Analyze request**. The example is assessed afresh by local AI.
+2. Click **Review with AI**. The example is assessed afresh by local AI.
 3. Open **Staff workspace**, sign in, inspect the AI handoff and original text, save a review, then confirm a synthetic appointment.
 
 | Demo account | Password | Role |
@@ -30,6 +30,8 @@ If an earlier copy is still running on port 8080, double-click **Start Final Dem
 | supervisor | demo-supervisor | Approve another reviewer's emergency downgrade |
 
 These are public demo credentials. Only the loopback address is served.
+
+Use [the three-minute judging script](DEMO.md) for the walkthrough. Before presenting, `python -X utf8 tools/demo_status.py --warm-up` checks the app on port 8081 and warms the model with one invented request. Omit `--warm-up` for a read-only readiness check.
 
 ## Set up a fresh Windows machine
 
